@@ -1,186 +1,189 @@
-# Aegis Next-Gen Network Intrusion Detection System & Threat Intelligence Analysis Platform
+# Network Intrusion Detection & Traffic Analysis (NIDS)
 
 <p align="center">
-  <img src="results/model_comparison.png" alt="Aegis NIDS Model Comparison" width="720" style="border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);" />
+  <img src="results/model_comparison.png" alt="NIDS Model Comparison" width="700" style="border-radius: 6px; box-shadow: 0 4px 16px rgba(0,0,0,0.3);" />
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Platform-Aegis%20SOC%20v2.0-00F0FF?style=for-the-badge&logo=shield&logoColor=black" alt="Aegis SOC" />
-  <img src="https://img.shields.io/badge/Node.js-%3E%3D18.0.0-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/Python-3.12-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
-  <img src="https://img.shields.io/badge/MITRE%20ATT%26CK-Enterprise-EF4444?style=for-the-badge&logo=target&logoColor=white" alt="MITRE ATT&CK" />
-  <img src="https://img.shields.io/badge/WCAG%202.1-AA%20Compliant-10B981?style=for-the-badge&logo=w3c&logoColor=white" alt="WCAG AA" />
-  <img src="https://img.shields.io/badge/Verification-36%2F36%20Passing%20(100%25)-brightgreen?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Verification" />
+  <img src="https://img.shields.io/badge/Python-3.10%20%7C%203.12-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python Version" />
+  <img src="https://img.shields.io/badge/Node.js-%3E%3D18.0.0-339933?style=flat-square&logo=node.js&logoColor=white" alt="Node.js Version" />
+  <img src="https://img.shields.io/badge/Framework-Express%20%26%20EJS-000000?style=flat-square&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/ML%20Engine-Scikit--Learn-F7931E?style=flat-square&logo=scikit-learn&logoColor=white" alt="Scikit-Learn" />
+  <img src="https://img.shields.io/badge/Framework-MITRE%20ATT%26CK-EF4444?style=flat-square&logo=target&logoColor=white" alt="MITRE ATT&CK" />
+  <img src="https://img.shields.io/badge/License-Apache%202.0-blue?style=flat-square" alt="License" />
 </p>
 
 ---
 
-## 1. Executive Summary
+## 1. Project Overview
 
-**Aegis SOC & NIDS Analysis** is an enterprise-grade cyber defense platform that bridges **cutting-edge machine learning research** with **real-time Security Operations Center (SOC) threat triage**.
+**Network Intrusion Detection & Traffic Analysis (NIDS)** is a full-stack cybersecurity application developed by **Alok Kumar**. It combines statistical machine learning, deep learning, and an interactive web dashboard to analyze network packet telemetry, detect malicious traffic anomalies, and provide defensive containment playbooks aligned with the **MITRE ATT&CK® Enterprise Matrix**.
 
-By combining modern high-throughput packet classification with the **MITRE ATT&CK® Enterprise Matrix**, Aegis evaluates telemetry across multiple machine learning architectures, quantifies consensus confidence, computes CVSS 3.1 severity scores, and delivers instant, copyable defensive containment playbooks.
-
-### Dual-Domain Capability
-1. **Interactive Aegis SOC Threat Intelligence Console (Production Operations):**
-   - Full-stack web application powered by Node.js, Express, Chart.js 4, and Bootstrap 5.
-   - Sub-second packet inference across an ensemble of **Random Forest**, **K-Nearest Neighbors (KNN)**, **Convolutional Neural Networks (CNN)**, and **Long Short-Term Memory (LSTM)** networks.
-   - Hardened with a resilient dual-mode database engine that operates both online (MongoDB) and in local offline air-gapped environments without external dependencies.
-2. **Machine Learning & Data Science Research Pipeline:**
-   - Modular Python framework for feature extraction, ANOVA feature ranking, and exploratory data analysis.
-   - Comprehensive model training suite on **UNSW-NB15** and **NSL-KDD** datasets, covering **Random Forest**, **Gradient Boosting**, **Multi-Layer Perceptron (MLP)**, **Isolation Forest** (unsupervised anomaly detection), and **One-Class SVM**.
+### What This Project Solves
+Traditional rule-based intrusion detection systems (such as legacy Snort rules) struggle with zero-day attacks, evasion techniques, and high packet volume. This project applies machine learning algorithms to evaluate Layer 4 network attributes, compute multi-model consensus, and classify traffic into benign activity or specific attack categories (**DoS**, **Probe**, **R2L**, and **U2R**).
 
 ---
 
-## 2. System Architecture
+## 2. Core Architecture & Components
+
+The repository is organized into two complementary systems:
+
+1. **Interactive Web Dashboard (`app.js`, `views/`, `public/`)**:
+   - A full-stack web console built with **Node.js**, **Express**, **EJS**, **Bootstrap 5**, and **Chart.js 4**.
+   - **Single Packet Triage**: Stochastically draws verified records from the validation set and evaluates them across 4 models simultaneously.
+   - **Parametric Packet Inspector**: Allows analysts to inject 16 custom Layer 4 parameters (protocol type, service, connection flag, error rates, host traffic count) or load preset attack vectors (*Neptune DoS*, *Smurf DoS*, *Satan Probe*, *Normal HTTP*).
+   - **Batch CSV Ingestion**: Drag-and-drop network traffic captures (16 to 42 columns). Validates schema with client-side PapaParse, runs batch inference, displays normal vs. attack ratios with threat doughnuts, and exports an annotated CSV.
+   - **Multi-Model Consensus**: Compares predictions across **Random Forest**, **K-Nearest Neighbors (KNN)**, **Convolutional Neural Networks (CNN)**, and **Long Short-Term Memory (LSTM)** models.
+   - **Incident Response Playbooks**: Displays CVSS severity ratings and copyable tactical containment commands (`iptables`, `tc qdisc`, `sysctl`) for each detected attack.
+   - **Resilient Dual-Mode Authentication**: Supports local MongoDB or automatically activates an offline fallback datastore for standalone or air-gapped environments.
+
+2. **Machine Learning & Data Science Research Pipeline (`src/`, `train_model.py`, `notebooks/`)**:
+   - Modular Python framework for feature engineering, label encoding, and ANOVA F-value feature selection (`SelectKBest`).
+   - Modular training CLI (`train_model.py`) supporting **Random Forest**, **Gradient Boosting**, **Multi-Layer Perceptron (MLP)**, **Isolation Forest** (unsupervised anomaly detection), and **One-Class SVM** on the **UNSW-NB15** dataset.
+   - Exploratory data analysis and experimental workflows in Jupyter notebooks (`notebooks/01_Training_Pipeline.ipynb`).
+
+---
+
+## 3. Workflow Diagram
 
 ```mermaid
 flowchart TD
-    subgraph INGESTION["Network Telemetry Ingestion Layer"]
-        A1["Real-time Packet Vector\n(16 Layer-4 Features)"] --> B["Dynamic Path Resolver\n(path_resolver.js / path_resolver.py)"]
-        A2["Batch Network Capture CSV\n(16 to 42 Columns / PapaParse Pre-flight)"] --> B
-        A3["Stochastic Benchmark Vector\n(NSL-KDD Validation Set)"] --> B
+    subgraph INGESTION["1. Traffic Ingestion"]
+        A1["Single Packet Telemetry\n(16 Layer-4 Attributes)"] --> B["Dynamic Path Resolver\n(path_resolver.js / path_resolver.py)"]
+        A2["Batch CSV Network Capture\n(16 or 42 Columns / PapaParse Preview)"] --> B
+        A3["Benchmark Sample Vector\n(NSL-KDD Validation Record)"] --> B
     end
 
-    subgraph PREPROCESSING["Deterministic Preprocessing Pipeline"]
-        B --> C["nids_preprocessor.py"]
-        C --> C1["Categorical Label Mapping\n(Protocol / Service / Flag)"]
-        C --> C2["MinMaxScaler Normalization\n(Pre-fitted scaler.sav)"]
+    subgraph PREPROCESS["2. Preprocessing & Normalization"]
+        B --> C["Deterministic Preprocessor\n(nids_preprocessor.py)"]
+        C --> C1["Categorical Encoding\n(protocol_type, service, flag)"]
+        C --> C2["MinMaxScaler Normalization\n(scaler.sav)"]
     end
 
-    subgraph INFERENCE["Multi-Model Inference & Consensus Engine"]
-        C1 & C2 --> D1["Random Forest\n(Ensemble 100 Trees)"]
-        C1 & C2 --> D2["K-Nearest Neighbors\n(k=5 Metric Space)"]
-        C1 & C2 --> D3["Deep CNN\n(Feature Map Convolutions)"]
-        C1 & C2 --> D4["Bi-Directional LSTM\n(Temporal Recurrent Sequence)"]
-        D1 & D2 & D3 & D4 --> E["Consensus Triage Matrix\n(Binary & Multi-Class Attack Synthesis)"]
+    subgraph MODELS["3. Multi-Model Inference Engine"]
+        C1 & C2 --> M1["Random Forest\n(97.4% Accuracy)"]
+        C1 & C2 --> M2["K-Nearest Neighbors\n(97.6% Accuracy)"]
+        C1 & C2 --> M3["Convolutional Neural Net (CNN)\n(95.8% Accuracy)"]
+        C1 & C2 --> M4["Bi-Directional LSTM\n(95.6% Accuracy)"]
+        M1 & M2 & M3 & M4 --> CONSENSUS["Consensus Triage Engine\n(Synthesizes Multi-Model Predictions)"]
     end
 
-    subgraph ENRICHMENT["MITRE ATT&CK® Threat Intelligence Engine"]
-        E --> F1{"Threat Detected?"}
-        F1 -- Yes --> F2["MITRE Technique Correlation\n(T1498 / T1046 / T1078 / T1068)"]
-        F2 --> F3["CVSS 3.1 Severity Scoring\n(Critical / High / Medium / Low)"]
-        F3 --> F4["Tactical Containment Playbooks\n(iptables / tc qdisc / sysctl commands)"]
-        F1 -- No --> F5["Normal Traffic Cleared (200 OK)"]
+    subgraph MITRE["4. Threat Intelligence Enrichment"]
+        CONSENSUS --> MITRE_CHECK{"Attack Detected?"}
+        MITRE_CHECK -- Yes --> MITRE_DATA["Correlate MITRE ATT&CK Matrix\n(T1498 / T1046 / T1078 / T1068)\nCVSS 3.1 Severity Rating & Impact"]
+        MITRE_DATA --> PLAYBOOK["Generate Defensive Containment Playbook\n(iptables, tc rate-limiting, sysctl rules)"]
+        MITRE_CHECK -- No --> BENIGN["Normal Traffic Cleared (200 OK)"]
     end
 
-    subgraph UI["Aegis SOC Console (Zero-CLS / WCAG 2.1 AA)"]
-        F4 & F5 --> G["Express Controller (app.js)"]
-        G --> H1["SOC Triage Dossier (secrets_2.ejs / paramsecrets.ejs)"]
-        G --> H2["Consensus Radar Chart (stats.ejs)"]
-        G --> H3["Threat Distribution Doughnut (index.ejs)"]
+    subgraph DASHBOARD["5. Web Console Output"]
+        PLAYBOOK & BENIGN --> WEB["Express Web Application (app.js)"]
+        WEB --> V1["Live Threat Dossier (secrets_2.ejs / paramsecrets.ejs)"]
+        WEB --> V2["Multi-Model Radar Chart (stats.ejs)"]
+        WEB --> V3["Batch Threat Doughnut & CSV Download (index.ejs)"]
     end
 ```
 
 ---
 
-## 3. Key Platform Features
+## 4. MITRE ATT&CK® Threat Taxonomy
 
-### 🎨 Aegis SOC Design System (`public/css/soc-design-system.css`)
-- **Zero Cumulative Layout Shift (CLS):** Explicit aspect-ratio containers (`.chart-container-reserved`) prevent content jumping on load.
-- **Deep Void SOC Palette:** High-contrast tokens (`#0A0E17` canvas, `#111827` surface, `#00F0FF` cyan, `#EF4444` crimson, `#F59E0B` amber, `#10B981` emerald) complying with WCAG 2.1 AA ($>16:1$ primary contrast ratio).
-- **Accessible Touch Targets:** Guaranteed minimum $44\text{px} \times 44\text{px}$ target sizes across all buttons, dropdowns, and form inputs.
-- **Hick's Law Optimization:** 16-parameter form segmented into 3 logical tiers (*Transport*, *Traffic Dynamics*, *Host History*) with one-click attack presets (*Neptune DoS*, *Smurf DoS*, *Satan Probe*, *Normal HTTP*).
-- **Mobile Insets:** Native CSS `env(safe-area-inset-*)` support for notched displays and hardware keyboards.
+Detected intrusions are mapped to standardized MITRE ATT&CK techniques with recommended defensive playbooks:
 
-### 🛡️ MITRE ATT&CK® Enterprise Matrix Correlation
-All detected intrusions are automatically classified against the standardized MITRE ATT&CK taxonomy:
-
-| Attack Category | MITRE Technique | Technique Name | CVSS 3.1 Score | Primary Tactical Impact | Standard Defensive Containment Playbook |
+| Attack Category | MITRE Technique | Technique Name | Severity | Primary Impact | Example Containment Command |
 | :--- | :--- | :--- | :---: | :--- | :--- |
-| **Denial of Service (DoS)** | **`T1498`** | Network Denial of Service | **8.6 (Critical)** | Socket exhaustion, SYN flooding | `sudo iptables -I INPUT -s <IP> -j DROP`<br>`sysctl -w net.ipv4.tcp_syncookies=1` |
-| **Surveillance / Probe** | **`T1046`** | Network Service Discovery | **5.3 (Medium)** | Port sweeping, OS fingerprinting | `sudo iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP`<br>`fail2ban-client set sshd banip <IP>` |
-| **Remote-to-Local (R2L)** | **`T1078`** | Valid Accounts / Unauthorized Access | **8.8 (High)** | Credential stuffing, brute force | `usermod -L <USER>`<br>`pkill -u <USER> -9`<br>`iptables -A INPUT -p tcp --dport 22 -m recent --set` |
-| **User-to-Root (U2R)** | **`T1068`** | Exploitation for Privilege Escalation | **9.8 (Critical)** | Buffer overflow, root takeover | `systemctl isolate rescue.target`<br>`lsof -p <PID>`<br>`kill -9 <PID>` |
+| **Denial of Service (DoS)** | **`T1498`** | Network Denial of Service | **Critical (8.6)** | Socket exhaustion, high packet volume | `sudo iptables -I INPUT -s <SRC_IP> -j DROP`<br>`sysctl -w net.ipv4.tcp_syncookies=1` |
+| **Surveillance / Probe** | **`T1046`** | Network Service Discovery | **Medium (5.3)** | Port scanning, service fingerprinting | `sudo iptables -A INPUT -p tcp --tcp-flags ALL NONE -j DROP`<br>`fail2ban-client set sshd banip <SRC_IP>` |
+| **Remote-to-Local (R2L)** | **`T1078`** | Valid Accounts / Unauthorized Access | **High (8.8)** | Credential stuffing, brute force login | `usermod -L <USER>`<br>`pkill -u <USER> -9`<br>`iptables -A INPUT -p tcp --dport 22 -m recent --set` |
+| **User-to-Root (U2R)** | **`T1068`** | Exploitation for Privilege Escalation | **Critical (9.8)** | Buffer overflow, local root compromise | `systemctl isolate rescue.target`<br>`lsof -p <PID>`<br>`kill -9 <PID>` |
 
 ---
 
-## 4. Empirical Model Benchmarks & Results
+## 5. Model Evaluation & Benchmarks
 
-The research pipeline trains and evaluates multiple classifiers. Pre-computed evaluation curves are preserved in [`results/`](results/):
+The project evaluates both classic intrusion benchmark datasets (**NSL-KDD**) and modern telemetry (**UNSW-NB15**). Pre-computed evaluation charts are available in [`results/`](results/):
 
-| Evaluation Metric | Visual Artifact | Description |
+| Metric | File | Description |
 | :--- | :--- | :--- |
-| **ROC Curve** | [`results/roc_curve.png`](results/roc_curve.png) | Multi-class Receiver Operating Characteristic curves comparing TPR vs. FPR. |
-| **Confusion Matrix** | [`results/confusion_matrix.png`](results/confusion_matrix.png) | Normalized prediction accuracy across attack classes. |
-| **Feature Importance** | [`results/feature_importance.png`](results/feature_importance.png) | Gini importance rankings for top network attributes. |
-| **Model Comparison** | [`results/model_comparison.png`](results/model_comparison.png) | Empirical benchmark comparison across Accuracy, Precision, Recall, and F1-Score. |
-| **Attack Distribution** | [`results/attack_distribution.png`](results/attack_distribution.png) | Class balance breakdown across normal traffic and attack vectors. |
+| **ROC Curves** | [`results/roc_curve.png`](results/roc_curve.png) | Receiver Operating Characteristic curves comparing True Positive Rate vs. False Positive Rate. |
+| **Confusion Matrix** | [`results/confusion_matrix.png`](results/confusion_matrix.png) | Normalized classification matrix across attack categories. |
+| **Feature Importance** | [`results/feature_importance.png`](results/feature_importance.png) | Gini importance ranking of top packet features. |
+| **Model Comparison** | [`results/model_comparison.png`](results/model_comparison.png) | Empirical benchmark comparing Accuracy, Precision, Recall, and F1-Score. |
+| **Attack Distribution** | [`results/attack_distribution.png`](results/attack_distribution.png) | Dataset balance breakdown between benign traffic and attack types. |
 
 <p align="center">
-  <img src="results/roc_curve.png" width="48%" alt="ROC Curve" />
+  <img src="results/roc_curve.png" width="48%" alt="ROC Curves" />
   <img src="results/confusion_matrix.png" width="48%" alt="Confusion Matrix" />
 </p>
 
 ---
 
-## 5. Repository Structure
+## 6. Repository File Structure
 
 ```
 network-intrusion-detection-analysis/
-├── app.js                          # Express.js core web server & session controller
-├── db_fallback.js                  # Dual-mode database engine (MongoDB + offline fallback)
-├── path_resolver.js                # Dynamic platform-agnostic directory resolver (Node.js)
-├── path_resolver.py                # Dynamic platform-agnostic directory resolver (Python)
-├── nids_preprocessor.py            # Central feature encoding & MITRE ATT&CK correlation
-├── nids_random_updated.py          # Random packet triage inference script
+├── app.js                          # Express.js web server & session controller
+├── db_fallback.js                  # Dual-mode database (MongoDB + offline fallback)
+├── path_resolver.js                # Cross-platform directory resolver (Node.js)
+├── path_resolver.py                # Cross-platform directory resolver (Python)
+├── nids_preprocessor.py            # Feature encoding & MITRE ATT&CK correlation engine
+├── nids_random_updated.py          # Random packet vector prediction script
 ├── nids_parameter_updated.py       # Custom 16-parameter packet inspector script
 ├── nids_csv_updated.py             # Adaptive batch CSV ingestion engine
-├── train_models.py                 # NSL-KDD Scikit-Learn model retraining script
-├── train_model.py                  # UNSW-NB15 ML training CLI (RF, GBDT, MLP, Isolation Forest)
-├── test_verification.js            # 36-gate automated test & verification suite
-├── test_server_live.js             # 10-route live HTTP server verification test
-├── package.json                    # Node.js dependencies & scripts
+├── train_models.py                 # NSL-KDD model retraining script (Scikit-Learn)
+├── train_model.py                  # UNSW-NB15 model training CLI (RF, GBDT, MLP, Isolation Forest)
+├── test_verification.js            # 36-test automated verification suite
+├── test_server_live.js             # 10-route live HTTP server smoke test
+├── package.json                    # Node.js dependencies and run scripts
 ├── requirements.txt                # Python dependencies
 ├── .env.example                    # Template environment variables
 ├── fs_new validation project.csv   # Validation dataset for scaler fitting
-├── scaler.sav                      # Serialized MinMaxScaler
+├── scaler.sav                      # Pre-fitted MinMaxScaler
 │
 ├── public/                         # Static web assets
 │   ├── css/
-│   │   └── soc-design-system.css   # Enterprise Aegis SOC dark design system (WCAG AA)
-│   └── images/                     # System icons and logos
+│   │   └── soc-design-system.css   # Dark theme SOC design system (WCAG 2.1 AA compliant)
+│   └── images/                     # System icons
 │
-├── views/                          # EJS Semantic HTML5 Templates
-│   ├── partials/                   # Header, footer, and navigation partials
-│   ├── home.ejs                    # Landing operations console with animated cyber radar
-│   ├── submit.ejs                  # Tactical command hub (3 triage modalities)
-│   ├── parameters.ejs              # 3-tier segmented packet inspector with presets
-│   ├── secrets_2.ejs               # Random triage consensus cards & MITRE dossier
+├── views/                          # Semantic EJS web templates
+│   ├── partials/                   # Header, footer, and navigation components
+│   ├── home.ejs                    # Landing page with live radar and metrics
+│   ├── submit.ejs                  # Triage modality selector hub
+│   ├── parameters.ejs              # 16-parameter packet inspector with presets
+│   ├── secrets_2.ejs               # Single packet triage dossier & MITRE playbooks
 │   ├── paramsecrets.ejs            # Parameter triage dossier & containment playbook
-│   ├── csv.ejs                     # Drag-and-drop CSV portal with PapaParse preview
-│   ├── index.ejs                   # Batch analytics dashboard & Chart.js doughnut
-│   ├── stats.ejs                   # 5-axis multi-model consensus radar chart
+│   ├── csv.ejs                     # Drag-and-drop batch CSV upload portal
+│   ├── index.ejs                   # Batch analytics results dashboard & Chart.js doughnut
+│   ├── stats.ejs                   # Multi-model consensus radar chart & metrics
 │   ├── attacks.ejs                 # MITRE ATT&CK taxonomy catalog
-│   ├── features.ejs                # 16-parameter telemetry specification guide
-│   ├── about.ejs                   # Architectural blueprint
-│   ├── login.ejs                   # Operator authentication
-│   └── register.ejs                # Operator credential provisioning
+│   ├── features.ejs                # 16 Layer-4 telemetry specification guide
+│   ├── about.ejs                   # Architecture & system design overview
+│   ├── login.ejs                   # User authentication
+│   └── register.ejs                # User registration
 │
 ├── src/                            # UNSW-NB15 Data Science Modules
-│   ├── capture/                    # Packet capture abstractions
+│   ├── capture/                    # Packet capture utilities
 │   ├── detection/
-│   │   └── model_trainer.py        # IDSModelTrainer class (supervised & anomaly models)
+│   │   └── model_trainer.py        # IDSModelTrainer class (supervised & anomaly detectors)
 │   └── utils/
-│       ├── data_loader.py          # UNSW-NB15 dataset ingestion
-│       └── feature_engineering.py  # Label encoding & SelectKBest feature selector
+│       ├── data_loader.py          # Dataset ingestion & chunking
+│       └── feature_engineering.py  # Categorical encoding & SelectKBest feature selector
 │
 ├── notebooks/                      # Jupyter Research Notebooks
-│   └── 01_Training_Pipeline.ipynb  # End-to-end exploratory analysis & training
+│   └── 01_Training_Pipeline.ipynb  # End-to-end model exploration and training
 │
-├── results/                        # Research evaluation figures (PNG)
+├── results/                        # Pre-generated evaluation figures (PNG)
 │   ├── attack_distribution.png
 │   ├── confusion_matrix.png
 │   ├── feature_importance.png
 │   ├── model_comparison.png
 │   └── roc_curve.png
 │
-└── Uploaded_files/                 # Workspace for batch CSV triage (.gitkeep)
+└── Uploaded_files/                 # Storage for processed CSV uploads (.gitkeep)
 ```
 
 ---
 
-## 6. Quickstart & Installation
+## 7. Installation & Quickstart
 
 ### Prerequisites
 - **Node.js:** v18.0.0 or higher ([Download Node.js](https://nodejs.org/))
@@ -192,27 +195,27 @@ git clone https://github.com/Alokkr00/network-intrusion-detection-analysis.git
 cd network-intrusion-detection-analysis
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Install Node.js Dependencies
 ```bash
-# Install Node.js dependencies
 npm install
+```
 
-# Install Python dependencies
+### Step 3: Install Python Dependencies
+```bash
 pip install -r requirements.txt
 ```
 
-### Step 3: Configure Environment Variables (Optional)
+### Step 4: Configure Environment Variables (Optional)
 ```bash
-# Copy template configuration
 cp .env.example .env
 ```
-*(If MongoDB is not running locally, Aegis automatically activates its resilient local offline mode).*
+*(If MongoDB is not installed or running, the system will automatically activate its local offline mode with full authentication capabilities).*
 
 ---
 
-## 7. Running the Applications
+## 8. Running the Application
 
-### 🌐 Launch the Aegis SOC Web Console
+### 🌐 Launch the Interactive Web Dashboard
 ```bash
 npm start
 # or: node app.js
@@ -222,17 +225,17 @@ Open your browser and navigate to:
 http://localhost:3000
 ```
 
-#### Available Operations in Web Console:
-- **Tactical Command Hub ([`/submit`](http://localhost:3000/submit)):** Launch any triage modality.
+#### Key Dashboard Views:
+- **Operations Hub ([`/submit`](http://localhost:3000/submit)):** Choose between Random Sample Triage, Batch CSV Ingestion, and Custom Packet Inspector.
 - **Random Packet Triage ([`/secrets_2`](http://localhost:3000/secrets_2)):** Evaluate stochastic test packets across 4 models with instant MITRE playbooks.
 - **Parametric Packet Inspector ([`/parameters`](http://localhost:3000/parameters)):** Inject custom Layer 4 parameters or load attack presets (*Neptune DoS, Smurf DoS, Satan Probe*).
 - **Batch CSV Analysis ([`/csv`](http://localhost:3000/csv)):** Upload 16-to-42 column captures with client-side PapaParse schema previews and download annotated outputs.
-- **Multi-Model Radar ([`/stats`](http://localhost:3000/stats)):** Inspect 5-axis consensus visualizations comparing KNN, Random Forest, CNN, and LSTM.
+- **Model Consensus Radar ([`/stats`](http://localhost:3000/stats)):** Compare model performance across KNN, Random Forest, CNN, and LSTM.
 
 ---
 
 ### 🤖 Train Machine Learning Models (CLI)
-Train models on the UNSW-NB15 dataset using the modular CLI:
+You can train models on the UNSW-NB15 dataset using the CLI:
 
 ```bash
 # Train Random Forest with 10,000 samples
@@ -250,9 +253,9 @@ python train_model.py --model isolation_forest --sample 50000
 
 ---
 
-## 8. Verification & Automated Test Suite
+## 9. Verification & Automated Testing
 
-The platform includes a comprehensive 7-suite verification harness that validates all architectural layers:
+The project includes an automated test suite that validates the entire stack:
 
 ```bash
 # Run 36-gate automated verification suite
@@ -264,21 +267,19 @@ npm test
 ================================================================
   AEGIS SOC PLATFORM & DIRECTORY RESOLUTION VERIFICATION SUITE
 ================================================================
-
-[SUITE 1] Dynamic Platform-Agnostic Directory Resolution (7/7 PASS)
-[SUITE 2] Python Preprocessor & MITRE ATT&CK Correlation (1/1 PASS)
-[SUITE 3] Random Vector Prediction Script (5/5 PASS)
-[SUITE 4] Parameter Form Prediction Script (3/3 PASS)
-[SUITE 5] Adaptive Batch CSV Engine (4/4 PASS)
-[SUITE 6] Database Resilience & Offline Fallback Engine (3/3 PASS)
-[SUITE 7] Aegis SOC Views & Accessibility Compilation (13/13 PASS)
-
+  [PASS] Tests 1–7:   Node & Python Dynamic Directory Resolution & Traversal Defense
+  [PASS] Test 8:       Python Preprocessor & MITRE ATT&CK Correlation Engine
+  [PASS] Tests 9–13:   Random Vector Prediction Script (nids_random_updated.py)
+  [PASS] Tests 14–16:  Parameter Form Prediction Script (nids_parameter_updated.py)
+  [PASS] Tests 17–20:  Adaptive Batch CSV Engine & Analytics (nids_csv_updated.py)
+  [PASS] Tests 21–23:  Database Resilience & Offline Fallback Engine
+  [PASS] Tests 24–36:  Views & Accessibility Compilation (All 13 Templates)
 ================================================================
   VERIFICATION RESULTS: 36 / 36 TESTS PASSED (100% GREEN)
 ================================================================
 ```
 
-### Run Live Server Route Smoke Tests
+### Live Route Smoke Tests
 ```bash
 npm run test:live
 # (or: node test_server_live.js)
@@ -289,24 +290,14 @@ npm run test:live
 
 ---
 
-## 9. Security & Compliance
-
-- **No Hardcoded Paths:** Dynamic directory resolution guarantees consistent execution across Windows, Linux, and macOS without path traversal (`../../`) vulnerabilities.
-- **Zero CLS & Safe Area Insets:** Resilient UI rendering conforming to modern mobile and desktop standards.
-- **WCAG 2.1 AA Accessibility:** Glowing `:focus-visible` keyboard focus indicators, `.skip-to-content` navigation bypass link, and compliant contrast ratios.
-- **Secrets Protection:** Active `.env` files and bulky session captures are excluded from source control.
-
----
-
 ## 10. License & Citation
 
 This project is licensed under the **Apache License 2.0**.
 
-If you use Aegis SOC or this analysis framework in your research, please cite:
 ```bibtex
-@software{aegis_nids_2026,
+@software{kumar_nids_2026,
   author = {Kumar, Alok},
-  title = {Aegis Next-Gen Network Intrusion Detection System & Threat Intelligence Analysis Platform},
+  title = {Network Intrusion Detection & Traffic Analysis (NIDS)},
   year = {2026},
   url = {https://github.com/Alokkr00/network-intrusion-detection-analysis}
 }
