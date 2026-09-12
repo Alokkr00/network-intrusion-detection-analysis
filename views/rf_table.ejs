@@ -1,0 +1,73 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+  <div class="soc-card p-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4 pb-2 border-bottom border-secondary-subtle">
+      <div>
+        <span class="soc-badge badge-glow-safe mb-1">Ensemble Multiclass</span>
+        <h2 class="text-white mb-0">Random Forest Multi-Class Classification Table</h2>
+      </div>
+      <a href="/stats" class="btn-soc btn-soc-secondary"><i class="fas fa-arrow-left"></i> Back to Stats</a>
+    </div>
+
+    <div class="table-responsive-soc">
+      <table class="table-soc">
+        <thead>
+          <tr>
+            <th>Attack Category</th>
+            <th>Precision</th>
+            <th>Recall</th>
+            <th>F-1 Score</th>
+            <th class="text-end">Support (Records)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fw-bold text-danger"><i class="fas fa-radiation me-1"></i> DOS</td>
+            <td class="font-mono">1.00</td>
+            <td class="font-mono">1.00</td>
+            <td class="font-mono fw-bold text-success">1.00</td>
+            <td class="text-end font-mono">6,822</td>
+          </tr>
+          <tr>
+            <td class="fw-bold text-warning"><i class="fas fa-search me-1"></i> PROBE</td>
+            <td class="font-mono">1.00</td>
+            <td class="font-mono">1.00</td>
+            <td class="font-mono fw-bold text-success">1.00</td>
+            <td class="text-end font-mono">2,308</td>
+          </tr>
+          <tr>
+            <td class="fw-bold text-info"><i class="fas fa-network-wired me-1"></i> R2L</td>
+            <td class="font-mono">0.94</td>
+            <td class="font-mono">0.89</td>
+            <td class="font-mono fw-bold text-success">0.92</td>
+            <td class="text-end font-mono">1,007</td>
+          </tr>
+          <tr>
+            <td class="fw-bold text-danger"><i class="fas fa-user-secret me-1"></i> U2R</td>
+            <td class="font-mono">0.83</td>
+            <td class="font-mono">1.00</td>
+            <td class="font-mono fw-bold text-success">0.90</td>
+            <td class="text-end font-mono">1,765</td>
+          </tr>
+          <tr>
+            <td class="fw-bold text-success"><i class="fas fa-check-circle me-1"></i> NORMAL</td>
+            <td class="font-mono">0.99</td>
+            <td class="font-mono">0.95</td>
+            <td class="font-mono fw-bold text-success">0.97</td>
+            <td class="text-end font-mono">9,513</td>
+          </tr>
+          <tr>
+            <td class="fw-bold text-white">ACCURACY</td>
+            <td class="font-mono">-</td>
+            <td class="font-mono">-</td>
+            <td class="font-mono fw-bold text-success">0.97</td>
+            <td class="text-end font-mono">21,415</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

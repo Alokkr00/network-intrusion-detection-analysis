@@ -1,0 +1,47 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5 col-xl-4">
+      
+      <div class="soc-card p-4 p-md-5">
+        
+        <div class="text-center mb-4">
+          <div class="d-inline-flex p-3 rounded-circle mb-3" style="background: rgba(16, 185, 129, 0.1); color: var(--soc-emerald-safe);">
+            <i class="fas fa-user-shield fa-2x"></i>
+          </div>
+          <h2 class="text-white fw-bold mb-1">Operator Registration</h2>
+          <p class="text-secondary" style="font-size: 0.9rem;">Provision credentials for the SOC defense network</p>
+        </div>
+
+        <form action="/register" method="POST">
+          
+          <div class="soc-form-group mb-3">
+            <label class="soc-label" for="username">Operator Email / Identifier:</label>
+            <input type="text" class="soc-input" id="username" name="username" placeholder="analyst@soc.enterprise" required autocomplete="username">
+          </div>
+
+          <div class="soc-form-group mb-4">
+            <label class="soc-label" for="password">Create Master Password:</label>
+            <input type="password" class="soc-input" id="password" name="password" placeholder="••••••••••••" required autocomplete="new-password">
+            <small class="text-muted d-block mt-1">Minimum 8 characters with alphanumeric credentials.</small>
+          </div>
+
+          <button type="submit" class="btn-soc btn-soc-primary w-100 py-2 mb-3 font-weight-bold">
+            <i class="fas fa-user-plus"></i> Register Operator Account
+          </button>
+
+          <div class="text-center pt-3 border-top border-secondary-subtle">
+            <span class="text-secondary" style="font-size: 0.85rem;">Already have access?</span>
+            <a href="/login" class="text-info fw-semibold ms-1" style="font-size: 0.85rem; text-decoration: none;">Sign In Here</a>
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') %>

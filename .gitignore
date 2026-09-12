@@ -1,20 +1,45 @@
+# Python & Bytecode
 __pycache__/
 *.py[cod]
 venv/
 env/
-
 .ipynb_checkpoints
 
-*.csv
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.nyc_output/
+coverage/
 
-*.pkl
-*.joblib
+# Environment Variables & Secrets
+.env
+.env.test
+.env.local
+users_offline.json
 
-*.log
+# Runtime & Logs
 logs/
+*.log
+pids/
+*.pid
 
+# System & IDE
 .vscode/
 .idea/
-
 .DS_Store
 Thumbs.db
+
+# Exclude raw bulky dataset CSVs, but KEEP the project validation CSV
+data/raw/
+data/processed/
+*.csv
+!fs_new validation project.csv
+
+# Uploaded test captures (keep folder, ignore user uploads)
+Uploaded_files/*
+!Uploaded_files/.gitkeep
+
+# Bulky recordings/binaries
+*.mp4

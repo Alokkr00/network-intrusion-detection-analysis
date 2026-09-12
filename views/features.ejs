@@ -1,0 +1,105 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+  
+  <!-- Header Banner -->
+  <div class="text-center mb-5">
+    <div class="d-inline-flex align-items-center gap-2 mb-2">
+      <span class="soc-badge badge-glow-cyan"><i class="fas fa-list-check"></i> Telemetry Specification</span>
+      <span class="soc-badge badge-glow-purple"><i class="fas fa-network-wired"></i> 16 Selected Vector Features</span>
+    </div>
+    <h1 class="display-5 text-white fw-bold mb-2">Network Traffic Telemetry Features</h1>
+    <p class="text-secondary" style="max-width: 680px; margin: 0 auto;">
+      The 16 high-signal network attributes selected from the NSL-KDD benchmark dataset to optimize intrusion classification accuracy and reduce false positives.
+    </p>
+  </div>
+
+  <!-- 16 Feature Cards Grid -->
+  <div class="row g-4 mb-5">
+    
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-cyan mb-2" style="font-size: 0.7rem;">Categorical (3)</span>
+        <h5 class="text-white mb-1">protocol_type</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Transport protocol type: TCP, UDP, or ICMP. Critical in identifying protocol-specific attacks such as Smurf broadcast floods and SYN storms.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-cyan mb-2" style="font-size: 0.7rem;">Categorical (70)</span>
+        <h5 class="text-white mb-1">service</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Destination network service/port (e.g. http, ftp, smtp, private). Irregular service traffic highlights port scanning and covert channels.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-cyan mb-2" style="font-size: 0.7rem;">Categorical (11)</span>
+        <h5 class="text-white mb-1">flag</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Normal or error status of the TCP connection (e.g. SF, S0, REJ, RSTO). High frequency of S0 or REJ denotes active intrusion attempts.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-safe mb-2" style="font-size: 0.7rem;">Binary (0 or 1)</span>
+        <h5 class="text-white mb-1">logged_in</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">1 if successfully authenticated to the target host; 0 otherwise. Attackers attempting privileged actions with logged_in=0 signify R2L attacks.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-warning mb-2" style="font-size: 0.7rem;">Integer Count</span>
+        <h5 class="text-white mb-1">count & srv_count</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Cumulative connections to the same host and service in the past 2-second sliding window. Spikes denote flooding or automated sweeps.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-critical mb-2" style="font-size: 0.7rem;">Float (0.0 - 1.0)</span>
+        <h5 class="text-white mb-1">srv_serror_rate</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Percentage of connections that resulted in SYN errors. Values &gt; 0.70 are classic signatures of TCP SYN Floods (Neptune attack).</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-warning mb-2" style="font-size: 0.7rem;">Float (0.0 - 1.0)</span>
+        <h5 class="text-white mb-1">diff_srv_rate</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Percentage of connections spanning different services. High rates indicate sequential port scanning (Satan, Nmap).</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-purple mb-2" style="font-size: 0.7rem;">Integer (0 - 255)</span>
+        <h5 class="text-white mb-1">dst_host_count</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Count of cumulative connections directed to the destination host in a 100-connection history buffer.</p>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="soc-card h-100 p-3">
+        <span class="soc-badge badge-glow-purple mb-2" style="font-size: 0.7rem;">Float (0.0 - 1.0)</span>
+        <h5 class="text-white mb-1">dst_host_same_src_port_rate</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.85rem;">Proportion of connections originating from the same client source port, revealing automated attack tools.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Callout -->
+  <div class="soc-card p-4 text-center">
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a href="/parameters" class="btn-soc btn-soc-primary"><i class="fas fa-sliders"></i> Test Features in Inspector</a>
+      <a href="/submit" class="btn-soc btn-soc-secondary"><i class="fas fa-gauge-high"></i> Operations Hub</a>
+      <a href="/attacks" class="btn-soc btn-soc-outline-cyan"><i class="fas fa-crosshairs"></i> MITRE ATT&CK Matrix</a>
+    </div>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>

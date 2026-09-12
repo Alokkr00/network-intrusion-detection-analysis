@@ -1,0 +1,345 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+
+  <!-- Header Banner -->
+  <div class="text-center mb-4">
+    <div class="d-inline-flex align-items-center gap-2 mb-2">
+      <span class="soc-badge badge-glow-warning"><i class="fas fa-sliders"></i> Targeted Packet Inspector</span>
+      <span class="soc-badge badge-glow-cyan"><i class="fas fa-crosshairs"></i> 16 Vector Features</span>
+    </div>
+    <h1 class="display-5 text-white fw-bold mb-2">Custom Packet Parameter Inspector</h1>
+    <p class="text-secondary" style="max-width: 680px; margin: 0 auto;">
+      Inject customized Layer 4 attributes, connection states, and error distributions to simulate real-world cyber threat vectors and inspect model predictions.
+    </p>
+  </div>
+
+  <!-- Quick-Fill Threat Vector Presets (Addresses Hick's Law) -->
+  <div class="soc-card p-3 mb-4">
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <i class="fas fa-bolt" style="color: var(--soc-neon-cyan);"></i>
+        <strong class="text-white">Quick-Load Attack Presets:</strong>
+        <span class="text-secondary d-none d-md-inline" style="font-size: 0.85rem;">Populate verified attack signatures into the form:</span>
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <button type="button" class="btn-soc btn-soc-danger btn-sm" onclick="loadPreset('neptune')">
+          <i class="fas fa-radiation"></i> Neptune SYN Flood (DoS)
+        </button>
+        <button type="button" class="btn-soc btn-soc-danger btn-sm" onclick="loadPreset('smurf')">
+          <i class="fas fa-fire"></i> Smurf ICMP (DoS)
+        </button>
+        <button type="button" class="btn-soc btn-soc-secondary btn-sm" onclick="loadPreset('satan')">
+          <i class="fas fa-search"></i> Satan Portscan (Probe)
+        </button>
+        <button type="button" class="btn-soc btn-soc-outline-cyan btn-sm" onclick="loadPreset('normal')">
+          <i class="fas fa-check-circle"></i> Normal HTTP (Benign)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parameter Form -->
+  <form id="parameterForm" action="/parameters" method="POST">
+    
+    <div class="row g-4">
+      
+      <!-- Tier 1: Layer 4 Transport & Session State -->
+      <div class="col-lg-4">
+        <div class="soc-card h-100">
+          <div class="soc-card-header">
+            <h5 class="mb-0 text-white"><i class="fas fa-network-wired me-2" style="color: var(--soc-neon-cyan);"></i>1. Transport Layer</h5>
+            <span class="soc-badge badge-glow-cyan" style="font-size: 0.7rem;">Protocol & Flags</span>
+          </div>
+          <div class="soc-card-body">
+            
+            <div class="soc-form-group">
+              <label class="soc-label" for="protocol_type">
+                Protocol Type
+                <small>(Transport Layer)</small>
+              </label>
+              <select class="soc-select" id="protocol_type" name="protocol_type" required>
+                <option value="tcp" selected>TCP (Transmission Control Protocol)</option>
+                <option value="udp">UDP (User Datagram Protocol)</option>
+                <option value="icmp">ICMP (Internet Control Message Protocol)</option>
+              </select>
+              <small class="text-muted d-block mt-1">ICMP common in Smurf; TCP in SYN Floods.</small>
+            </div>
+
+            <div class="soc-form-group">
+              <label class="soc-label" for="service">
+                Application Service
+                <small>(Destination Port/Daemon)</small>
+              </label>
+              <select class="soc-select" id="service" name="service" required>
+                <option value="http" selected>http (Web Server - Port 80)</option>
+                <option value="private">private (Internal/Private Service)</option>
+                <option value="eco_i">eco_i (ICMP Echo Request)</option>
+                <option value="ecr_i">ecr_i (ICMP Echo Reply)</option>
+                <option value="ftp">ftp (File Transfer Protocol)</option>
+                <option value="ftp_data">ftp_data (FTP Data Channel)</option>
+                <option value="smtp">smtp (Mail Daemon)</option>
+                <option value="telnet">telnet (Remote Shell)</option>
+                <option value="domain_u">domain_u (DNS Daemon)</option>
+                <option value="finger">finger (User Enumeration)</option>
+                <option value="other">other (General Unknown Service)</option>
+              </select>
+              <small class="text-muted d-block mt-1">Traffic on 'private' often denotes port scans.</small>
+            </div>
+
+            <div class="soc-form-group">
+              <label class="soc-label" for="flag">
+                TCP Connection Flag
+                <small>(Handshake State)</small>
+              </label>
+              <select class="soc-select" id="flag" name="flag" required>
+                <option value="SF" selected>SF (Normal Establishment & Termination)</option>
+                <option value="S0">S0 (Connection Attempt Seen, No Reply - SYN Flood)</option>
+                <option value="REJ">REJ (Connection Rejected by Host)</option>
+                <option value="RSTO">RSTO (Reset by Originator)</option>
+                <option value="RSTOS0">RSTOS0 (Originator Sent SYN then RST)</option>
+                <option value="SH">SH (Originator Sent SYN with FIN)</option>
+                <option value="S1">S1 (Connection Established, Not Terminated)</option>
+                <option value="OTH">OTH (Other Flag State)</option>
+              </select>
+              <small class="text-muted d-block mt-1">S0 flags characterize TCP SYN Flooding.</small>
+            </div>
+
+            <div class="soc-form-group mb-0">
+              <label class="soc-label" for="logged_in">
+                User Authentication Status
+                <small>(logged_in)</small>
+              </label>
+              <select class="soc-select" id="logged_in" name="logged_in" required>
+                <option value="1" selected>1 - Successfully Authenticated</option>
+                <option value="0">0 - Unauthenticated / Anonymous Session</option>
+              </select>
+              <small class="text-muted d-block mt-1">Attackers attempting privileged actions with logged_in=0 signal R2L exploits.</small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 2: 2-Second Time Window Traffic & Error Rates -->
+      <div class="col-lg-4">
+        <div class="soc-card h-100">
+          <div class="soc-card-header">
+            <h5 class="mb-0 text-white"><i class="fas fa-chart-simple me-2" style="color: var(--soc-amber-warning);"></i>2. Traffic Dynamics</h5>
+            <span class="soc-badge badge-glow-warning" style="font-size: 0.7rem;">2-Second Window</span>
+          </div>
+          <div class="soc-card-body">
+
+            <div class="row g-2">
+              <div class="col-6 soc-form-group">
+                <label class="soc-label" for="count">
+                  Host Count
+                  <small>(&ge; 0)</small>
+                </label>
+                <input type="number" class="soc-input" id="count" name="count" value="4" min="0" max="65535" required>
+                <small class="text-muted d-block mt-1">Connections to same destination host.</small>
+              </div>
+
+              <div class="col-6 soc-form-group">
+                <label class="soc-label" for="srv_count">
+                  Service Count
+                  <small>(&ge; 0)</small>
+                </label>
+                <input type="number" class="soc-input" id="srv_count" name="srv_count" value="4" min="0" max="65535" required>
+                <small class="text-muted d-block mt-1">Connections to same destination service.</small>
+              </div>
+            </div>
+
+            <div class="soc-form-group">
+              <label class="soc-label" for="srv_serror_rate">
+                Service SYN Error Rate
+                <small>(0.0 - 1.0)</small>
+              </label>
+              <input type="number" step="0.01" class="soc-input" id="srv_serror_rate" name="srv_serror_rate" value="0.0" min="0" max="1" required>
+              <small class="text-muted d-block mt-1">&gt; 0.70 indicates active TCP SYN Floods.</small>
+            </div>
+
+            <div class="soc-form-group">
+              <label class="soc-label" for="srv_rerror_rate">
+                Service REJ Error Rate
+                <small>(0.0 - 1.0)</small>
+              </label>
+              <input type="number" step="0.01" class="soc-input" id="srv_rerror_rate" name="srv_rerror_rate" value="0.0" min="0" max="1" required>
+              <small class="text-muted d-block mt-1">High rates indicate closed port hammering.</small>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-6 soc-form-group mb-0">
+                <label class="soc-label" for="same_srv_rate">
+                  Same Service Rate
+                  <small>(0.0 - 1.0)</small>
+                </label>
+                <input type="number" step="0.01" class="soc-input" id="same_srv_rate" name="same_srv_rate" value="1.0" min="0" max="1" required>
+                <small class="text-muted d-block mt-1">Focused single-service load.</small>
+              </div>
+
+              <div class="col-6 soc-form-group mb-0">
+                <label class="soc-label" for="diff_srv_rate">
+                  Diff Service Rate
+                  <small>(0.0 - 1.0)</small>
+                </label>
+                <input type="number" step="0.01" class="soc-input" id="diff_srv_rate" name="diff_srv_rate" value="0.0" min="0" max="1" required>
+                <small class="text-muted d-block mt-1">&gt; 0.50 denotes port scanning.</small>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier 3: Destination Host History (100-Connection Buffer) -->
+      <div class="col-lg-4">
+        <div class="soc-card h-100">
+          <div class="soc-card-header">
+            <h5 class="mb-0 text-white"><i class="fas fa-server me-2" style="color: var(--soc-purple-model);"></i>3. Host History</h5>
+            <span class="soc-badge badge-glow-purple" style="font-size: 0.7rem;">100-Buffer Rates</span>
+          </div>
+          <div class="soc-card-body">
+
+            <div class="row g-2">
+              <div class="col-6 soc-form-group">
+                <label class="soc-label" for="dst_host_count">
+                  Dst Host Count
+                  <small>(0-255)</small>
+                </label>
+                <input type="number" class="soc-input" id="dst_host_count" name="dst_host_count" value="255" min="0" max="255" required>
+              </div>
+
+              <div class="col-6 soc-form-group">
+                <label class="soc-label" for="dst_host_srv_count">
+                  Dst Srv Count
+                  <small>(0-255)</small>
+                </label>
+                <input type="number" class="soc-input" id="dst_host_srv_count" name="dst_host_srv_count" value="234" min="0" max="255" required>
+              </div>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-6 soc-form-group">
+                <label class="soc-label" for="dst_host_same_srv_rate">
+                  Same Srv Rate
+                  <small>(0-1)</small>
+                </label>
+                <input type="number" step="0.01" class="soc-input" id="dst_host_same_srv_rate" name="dst_host_same_srv_rate" value="0.92" min="0" max="1" required>
+              </div>
+
+              <div class="col-6 soc-form-group">
+                <label class="soc-label" for="dst_host_diff_srv_rate">
+                  Diff Srv Rate
+                  <small>(0-1)</small>
+                </label>
+                <input type="number" step="0.01" class="soc-input" id="dst_host_diff_srv_rate" name="dst_host_diff_srv_rate" value="0.01" min="0" max="1" required>
+              </div>
+            </div>
+
+            <div class="soc-form-group">
+              <label class="soc-label" for="dst_host_same_src_port_rate">
+                Persistent Src Port Rate
+                <small>(0.0 - 1.0)</small>
+              </label>
+              <input type="number" step="0.01" class="soc-input" id="dst_host_same_src_port_rate" name="dst_host_same_src_port_rate" value="0.0" min="0" max="1" required>
+              <small class="text-muted d-block mt-1">High rates indicate custom socket tools.</small>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-6 soc-form-group mb-0">
+                <label class="soc-label" for="dst_host_serror_rate">
+                  Dst Serror Rate
+                  <small>(0-1)</small>
+                </label>
+                <input type="number" step="0.01" class="soc-input" id="dst_host_serror_rate" name="dst_host_serror_rate" value="0.01" min="0" max="1" required>
+              </div>
+
+              <div class="col-6 soc-form-group mb-0">
+                <label class="soc-label" for="dst_host_rerror_rate">
+                  Dst Rerror Rate
+                  <small>(0-1)</small>
+                </label>
+                <input type="number" step="0.01" class="soc-input" id="dst_host_rerror_rate" name="dst_host_rerror_rate" value="0.0" min="0" max="1" required>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Submit Action Bar -->
+    <div class="soc-card p-4 mt-4 text-center">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="text-start">
+          <strong class="text-white d-block">Ready to Analyze Packet Vector</strong>
+          <span class="text-secondary" style="font-size: 0.85rem;">Input will be scaled and evaluated across KNN, Random Forest, CNN, and LSTM.</span>
+        </div>
+        <div class="d-flex gap-3">
+          <button type="reset" class="btn-soc btn-soc-secondary">
+            <i class="fas fa-rotate-left"></i> Reset Defaults
+          </button>
+          <button type="submit" id="submitBtn" class="btn-soc btn-soc-primary px-4">
+            <i class="fas fa-shield-alt"></i> Execute Multi-Model Triage
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+
+<script>
+// Attack Vector Presets Database
+const ATTACK_PRESETS = {
+  neptune: {
+    protocol_type: 'tcp', service: 'private', flag: 'S0', logged_in: '0',
+    count: 240, srv_count: 12, srv_serror_rate: 1.0, srv_rerror_rate: 0.0,
+    same_srv_rate: 0.05, diff_srv_rate: 0.07, dst_host_count: 255,
+    dst_host_srv_count: 12, dst_host_same_srv_rate: 0.05, dst_host_diff_srv_rate: 0.07,
+    dst_host_same_src_port_rate: 0.0, dst_host_serror_rate: 1.0, dst_host_rerror_rate: 0.0
+  },
+  smurf: {
+    protocol_type: 'icmp', service: 'ecr_i', flag: 'SF', logged_in: '0',
+    count: 511, srv_count: 511, srv_serror_rate: 0.0, srv_rerror_rate: 0.0,
+    same_srv_rate: 1.0, diff_srv_rate: 0.0, dst_host_count: 255,
+    dst_host_srv_count: 255, dst_host_same_srv_rate: 1.0, dst_host_diff_srv_rate: 0.0,
+    dst_host_same_src_port_rate: 1.0, dst_host_serror_rate: 0.0, dst_host_rerror_rate: 0.0
+  },
+  satan: {
+    protocol_type: 'tcp', service: 'other', flag: 'REJ', logged_in: '0',
+    count: 210, srv_count: 5, srv_serror_rate: 0.12, srv_rerror_rate: 0.88,
+    same_srv_rate: 0.02, diff_srv_rate: 0.98, dst_host_count: 255,
+    dst_host_srv_count: 5, dst_host_same_srv_rate: 0.02, dst_host_diff_srv_rate: 0.98,
+    dst_host_same_src_port_rate: 0.01, dst_host_serror_rate: 0.10, dst_host_rerror_rate: 0.88
+  },
+  normal: {
+    protocol_type: 'tcp', service: 'http', flag: 'SF', logged_in: '1',
+    count: 4, srv_count: 4, srv_serror_rate: 0.0, srv_rerror_rate: 0.0,
+    same_srv_rate: 1.0, diff_srv_rate: 0.0, dst_host_count: 255,
+    dst_host_srv_count: 234, dst_host_same_srv_rate: 0.92, dst_host_diff_srv_rate: 0.01,
+    dst_host_same_src_port_rate: 0.0, dst_host_serror_rate: 0.01, dst_host_rerror_rate: 0.0
+  }
+};
+
+function loadPreset(presetName) {
+  const p = ATTACK_PRESETS[presetName];
+  if (!p) return;
+  for (const [key, val] of Object.entries(p)) {
+    const el = document.getElementById(key);
+    if (el) el.value = val;
+  }
+}
+
+// Loading feedback on submission
+document.getElementById('parameterForm').addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-cog fa-spin me-2"></i>Executing Multi-Model Triage...';
+});
+</script>
+
+<%- include('partials/footer') %>

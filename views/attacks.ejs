@@ -1,0 +1,177 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+  
+  <!-- Header Banner -->
+  <div class="text-center mb-5">
+    <div class="d-inline-flex align-items-center gap-2 mb-2">
+      <span class="soc-badge badge-glow-critical"><i class="fas fa-crosshairs"></i> MITRE ATT&CK® Framework</span>
+      <span class="soc-badge badge-glow-cyan"><i class="fas fa-book-shield"></i> Threat Intelligence Matrix</span>
+    </div>
+    <h1 class="display-5 text-white fw-bold mb-2">Network Intrusion Attack Classifications</h1>
+    <p class="text-secondary" style="max-width: 680px; margin: 0 auto;">
+      Mapping NSL-KDD attack signatures to the standardized MITRE ATT&CK® Enterprise framework with tactical containment guidance curated by Dr. Tariq Al-Mansoor.
+    </p>
+  </div>
+
+  <!-- 4 Attack Categories Grid -->
+  <div class="row g-4 mb-5">
+    
+    <!-- 1. DoS Attack Dossier -->
+    <div class="col-lg-6">
+      <div class="soc-card h-100 border-danger">
+        <div class="soc-card-header" style="background: rgba(239, 68, 68, 0.15);">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-radiation text-danger"></i>
+            <h4 class="mb-0 text-white">Denial of Service (DoS)</h4>
+          </div>
+          <span class="soc-badge badge-glow-critical">CRITICAL (P1)</span>
+        </div>
+        <div class="soc-card-body">
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Technique</small>
+              <strong class="text-white font-mono" style="color: var(--soc-neon-cyan);">T1498 (Network DoS)</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Tactic & CVSS</small>
+              <strong class="text-white">Impact (TA0040) | CVSS 8.6</strong>
+            </div>
+          </div>
+          <p class="text-secondary" style="font-size: 0.95rem;">
+            Flooding attacks targeting network sockets, kernel memory, or CPU cycles to render services inaccessible to legitimate users.
+          </p>
+          <div class="p-2 rounded mb-3" style="background: var(--soc-bg-canvas);">
+            <small class="text-secondary d-block font-mono mb-1">Observed NSL-KDD Sub-Attacks:</small>
+            <span class="text-white font-mono" style="font-size: 0.85rem;">neptune (SYN flood), smurf (ICMP broadcast), pod (ping of death), teardrop, land, back, apache2, udpstorm</span>
+          </div>
+          <div class="soc-terminal-block">
+            <small class="text-secondary d-block font-mono mb-1">Containment Action:</small>
+            <code class="soc-terminal-code">sudo iptables -I INPUT -s &lt;ATTACKER_IP&gt; -j DROP&#10;sudo sysctl -w net.ipv4.tcp_syncookies=1</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Probe / Recon Dossier -->
+    <div class="col-lg-6">
+      <div class="soc-card h-100 border-warning">
+        <div class="soc-card-header" style="background: rgba(245, 158, 11, 0.15);">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-search-location text-warning"></i>
+            <h4 class="mb-0 text-white">Reconnaissance & Probing</h4>
+          </div>
+          <span class="soc-badge badge-glow-warning">HIGH (P2)</span>
+        </div>
+        <div class="soc-card-body">
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Technique</small>
+              <strong class="text-white font-mono" style="color: var(--soc-neon-cyan);">T1046 (Service Discovery)</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Tactic & CVSS</small>
+              <strong class="text-white">Discovery (TA0007) | CVSS 6.5</strong>
+            </div>
+          </div>
+          <p class="text-secondary" style="font-size: 0.95rem;">
+            Systematic scanning of ports, network devices, and daemon banners to identify vulnerabilities prior to targeted exploitation.
+          </p>
+          <div class="p-2 rounded mb-3" style="background: var(--soc-bg-canvas);">
+            <small class="text-secondary d-block font-mono mb-1">Observed NSL-KDD Sub-Attacks:</small>
+            <span class="text-white font-mono" style="font-size: 0.85rem;">satan (port scan), ipsweep, nmap, portsweep, mscan, saint</span>
+          </div>
+          <div class="soc-terminal-block">
+            <small class="text-secondary d-block font-mono mb-1">Containment Action:</small>
+            <code class="soc-terminal-code">sudo iptables -A INPUT -p tcp -s &lt;ATTACKER_IP&gt; -j TARPIT&#10;sudo iptables -A OUTPUT -p tcp --tcp-flags RST RST -j DROP</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. R2L Infiltration Dossier -->
+    <div class="col-lg-6">
+      <div class="soc-card h-100" style="border-color: var(--soc-neon-cyan);">
+        <div class="soc-card-header" style="background: rgba(0, 240, 255, 0.12);">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-network-wired text-info"></i>
+            <h4 class="mb-0 text-white">Remote to Local (R2L)</h4>
+          </div>
+          <span class="soc-badge badge-glow-cyan">HIGH (P2)</span>
+        </div>
+        <div class="soc-card-body">
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Technique</small>
+              <strong class="text-white font-mono" style="color: var(--soc-neon-cyan);">T1078 (Valid Accounts)</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Tactic & CVSS</small>
+              <strong class="text-white">Initial Access (TA0001) | CVSS 8.1</strong>
+            </div>
+          </div>
+          <p class="text-secondary" style="font-size: 0.95rem;">
+            External penetration attempts where an untrusted client exploits vulnerabilities or brute-forces credentials to obtain local user access.
+          </p>
+          <div class="p-2 rounded mb-3" style="background: var(--soc-bg-canvas);">
+            <small class="text-secondary d-block font-mono mb-1">Observed NSL-KDD Sub-Attacks:</small>
+            <span class="text-white font-mono" style="font-size: 0.85rem;">guess_passwd (brute-force), warezclient, warezmaster, imap, ftp_write, multihop, phf, spy, sendmail</span>
+          </div>
+          <div class="soc-terminal-block">
+            <small class="text-secondary d-block font-mono mb-1">Containment Action:</small>
+            <code class="soc-terminal-code">sudo pkill -u &lt;SUSPECT_USER&gt; -9&#10;sudo fail2ban-client set sshd banip &lt;ATTACKER_IP&gt;</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. U2R Privilege Escalation Dossier -->
+    <div class="col-lg-6">
+      <div class="soc-card h-100 border-danger">
+        <div class="soc-card-header" style="background: rgba(239, 68, 68, 0.15);">
+          <div class="d-flex align-items-center gap-2">
+            <i class="fas fa-user-secret text-danger"></i>
+            <h4 class="mb-0 text-white">User to Root (U2R)</h4>
+          </div>
+          <span class="soc-badge badge-glow-critical">SEVERE (P1)</span>
+        </div>
+        <div class="soc-card-body">
+          <div class="row g-2 mb-3">
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Technique</small>
+              <strong class="text-white font-mono" style="color: var(--soc-neon-cyan);">T1068 (Privilege Escalation)</strong>
+            </div>
+            <div class="col-6">
+              <small class="text-secondary d-block font-mono">MITRE Tactic & CVSS</small>
+              <strong class="text-white">Privilege Escalation (TA0004) | CVSS 9.8</strong>
+            </div>
+          </div>
+          <p class="text-secondary" style="font-size: 0.95rem;">
+            Attacks where an adversary with normal user privileges executes kernel or daemon exploits to elevate execution privileges to root/UID 0.
+          </p>
+          <div class="p-2 rounded mb-3" style="background: var(--soc-bg-canvas);">
+            <small class="text-secondary d-block font-mono mb-1">Observed NSL-KDD Sub-Attacks:</small>
+            <span class="text-white font-mono" style="font-size: 0.85rem;">buffer_overflow, rootkit, loadmodule, perl, ps, xterm, sqlattack</span>
+          </div>
+          <div class="soc-terminal-block">
+            <small class="text-secondary d-block font-mono mb-1">Containment Action:</small>
+            <code class="soc-terminal-code">sudo ip link set dev eth0 down&#10;sudo kill -9 &lt;SUSPECT_PID&gt; && sudo dd if=/dev/fmem of=/mnt/evidence/ram.raw bs=1M</code>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Navigation Action -->
+  <div class="soc-card p-4 text-center">
+    <div class="d-flex flex-wrap justify-content-center gap-3">
+      <a href="/submit" class="btn-soc btn-soc-primary"><i class="fas fa-gauge-high"></i> Launch Detection Console</a>
+      <a href="/parameters" class="btn-soc btn-soc-secondary"><i class="fas fa-sliders"></i> Test Vector in Inspector</a>
+      <a href="/stats" class="btn-soc btn-soc-outline-cyan"><i class="fas fa-chart-line"></i> Model Performance</a>
+    </div>
+  </div>
+
+</div>
+
+<%- include('partials/footer') %>

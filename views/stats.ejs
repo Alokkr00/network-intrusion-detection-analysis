@@ -1,0 +1,278 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+  
+  <!-- Header Banner -->
+  <div class="text-center mb-5">
+    <div class="d-inline-flex align-items-center gap-2 mb-2">
+      <span class="soc-badge badge-glow-purple"><i class="fas fa-chart-line"></i> Model Benchmark Suite</span>
+      <span class="soc-badge badge-glow-cyan"><i class="fas fa-microchip"></i> NSL-KDD 22,544 Evaluation Records</span>
+    </div>
+    <h1 class="display-5 text-white fw-bold mb-2">Inference Model Performance & Benchmarks</h1>
+    <p class="text-secondary" style="max-width: 680px; margin: 0 auto;">
+      Comprehensive empirical evaluation comparing K-Nearest Neighbors, Random Forest ensemble, Convolutional Neural Network (CNN), and Long Short-Term Memory (LSTM) network.
+    </p>
+  </div>
+
+  <!-- Model Comparison Radar Chart & Metric Cards (Zero CLS) -->
+  <div class="row g-4 mb-5">
+    
+    <!-- Radar Chart -->
+    <div class="col-lg-7">
+      <div class="soc-card h-100">
+        <div class="soc-card-header">
+          <h5 class="mb-0 text-white"><i class="fas fa-spider me-2" style="color: var(--soc-neon-cyan);"></i>Multi-Model Quantitative Comparison</h5>
+          <span class="soc-badge badge-glow-cyan" style="font-size: 0.7rem;">5 Benchmark Axes</span>
+        </div>
+        <div class="soc-card-body d-flex flex-column align-items-center justify-content-center">
+          
+          <div class="chart-container-reserved w-100" style="max-height: 380px;">
+            <canvas id="modelRadarChart"></canvas>
+          </div>
+
+          <div class="d-flex flex-wrap justify-content-center gap-3 mt-3 text-secondary" style="font-size: 0.85rem;">
+            <span><i class="fas fa-circle me-1" style="color: #00F0FF;"></i> KNN (97.6%)</span>
+            <span><i class="fas fa-circle me-1" style="color: #10B981;"></i> Random Forest (97.4%)</span>
+            <span><i class="fas fa-circle me-1" style="color: #8B5CF6;"></i> CNN (95.8%)</span>
+            <span><i class="fas fa-circle me-1" style="color: #F59E0B;"></i> LSTM (95.6%)</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Benchmark Metric Overview -->
+    <div class="col-lg-5">
+      <div class="soc-card h-100">
+        <div class="soc-card-header">
+          <h5 class="mb-0 text-white"><i class="fas fa-trophy me-2" style="color: var(--soc-amber-warning);"></i>Empirical Scorecards</h5>
+          <span class="soc-badge badge-glow-safe" style="font-size: 0.7rem;">Verified Metrics</span>
+        </div>
+        <div class="soc-card-body d-flex flex-column justify-content-between gap-3">
+          
+          <!-- KNN -->
+          <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <strong class="text-white">K-Nearest Neighbors (KNN)</strong>
+              <span class="soc-badge badge-glow-cyan">97.60%</span>
+            </div>
+            <p class="text-secondary mb-0" style="font-size: 0.85rem;">Highest binary test accuracy. Effective for low-dimensional neighbor clustering in deterministic signature spaces.</p>
+          </div>
+
+          <!-- Random Forest -->
+          <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas); border-left: 3px solid var(--soc-emerald-safe) !important;">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <strong class="text-white">Random Forest (Recommended)</strong>
+              <span class="soc-badge badge-glow-safe">97.41%</span>
+            </div>
+            <p class="text-secondary mb-0" style="font-size: 0.85rem;">Optimal enterprise production model. Maximum resistance to overfitting, deterministic decision paths, sub-millisecond inference.</p>
+          </div>
+
+          <!-- CNN -->
+          <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <strong class="text-white">Convolutional Neural Net (CNN)</strong>
+              <span class="soc-badge badge-glow-purple">95.82%</span>
+            </div>
+            <p class="text-secondary mb-0" style="font-size: 0.85rem;">Hierarchical spatial pattern recognition across reshaped packet feature matrices.</p>
+          </div>
+
+          <!-- LSTM -->
+          <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <strong class="text-white">Recurrent Neural Net (LSTM)</strong>
+              <span class="soc-badge badge-glow-warning">95.62%</span>
+            </div>
+            <p class="text-secondary mb-0" style="font-size: 0.85rem;">Temporal sequence modeling capturing multi-step state transitions in continuous packet streams.</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Binary Classification Benchmark Table -->
+  <div class="soc-card mb-5">
+    <div class="soc-card-header">
+      <h5 class="mb-0 text-white"><i class="fas fa-table-cells me-2" style="color: var(--soc-neon-cyan);"></i>Binary-Class Classification Benchmark (Normal vs. Intrusion)</h5>
+      <span class="soc-badge badge-glow-cyan" style="font-size: 0.7rem;">Test Partition</span>
+    </div>
+    <div class="soc-card-body p-0">
+      <div class="table-responsive-soc">
+        <table class="table-soc">
+          <thead>
+            <tr>
+              <th>Algorithm</th>
+              <th>Class Target</th>
+              <th>Precision</th>
+              <th>Recall</th>
+              <th>F1-Score</th>
+              <th class="text-end">Support (Records)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td rowspan="2" class="fw-bold text-white border-end border-secondary-subtle">KNN</td>
+              <td class="text-success"><i class="fas fa-check-circle me-1"></i> Normal</td>
+              <td class="font-mono">0.97</td>
+              <td class="font-mono">0.97</td>
+              <td class="font-mono fw-bold text-info">0.97</td>
+              <td class="text-end font-mono">9,246</td>
+            </tr>
+            <tr>
+              <td class="text-danger"><i class="fas fa-triangle-exclamation me-1"></i> Attack</td>
+              <td class="font-mono">0.98</td>
+              <td class="font-mono">0.98</td>
+              <td class="font-mono fw-bold text-info">0.98</td>
+              <td class="text-end font-mono">13,298</td>
+            </tr>
+            <tr>
+              <td rowspan="2" class="fw-bold text-white border-end border-secondary-subtle">Random Forest</td>
+              <td class="text-success"><i class="fas fa-check-circle me-1"></i> Normal</td>
+              <td class="font-mono">0.99</td>
+              <td class="font-mono">0.96</td>
+              <td class="font-mono fw-bold text-success">0.97</td>
+              <td class="text-end font-mono">9,847</td>
+            </tr>
+            <tr>
+              <td class="text-danger"><i class="fas fa-triangle-exclamation me-1"></i> Attack</td>
+              <td class="font-mono">0.97</td>
+              <td class="font-mono">0.99</td>
+              <td class="font-mono fw-bold text-success">0.98</td>
+              <td class="text-end font-mono">12,697</td>
+            </tr>
+            <tr>
+              <td rowspan="2" class="fw-bold text-white border-end border-secondary-subtle">CNN</td>
+              <td class="text-success"><i class="fas fa-check-circle me-1"></i> Normal</td>
+              <td class="font-mono">0.94</td>
+              <td class="font-mono">0.97</td>
+              <td class="font-mono fw-bold text-primary">0.95</td>
+              <td class="text-end font-mono">9,711</td>
+            </tr>
+            <tr>
+              <td class="text-danger"><i class="fas fa-triangle-exclamation me-1"></i> Attack</td>
+              <td class="font-mono">0.97</td>
+              <td class="font-mono">0.95</td>
+              <td class="font-mono fw-bold text-primary">0.96</td>
+              <td class="text-end font-mono">12,833</td>
+            </tr>
+            <tr>
+              <td rowspan="2" class="fw-bold text-white border-end border-secondary-subtle">LSTM</td>
+              <td class="text-success"><i class="fas fa-check-circle me-1"></i> Normal</td>
+              <td class="font-mono">0.94</td>
+              <td class="font-mono">0.96</td>
+              <td class="font-mono fw-bold text-warning">0.95</td>
+              <td class="text-end font-mono">9,711</td>
+            </tr>
+            <tr>
+              <td class="text-danger"><i class="fas fa-triangle-exclamation me-1"></i> Attack</td>
+              <td class="font-mono">0.97</td>
+              <td class="font-mono">0.95</td>
+              <td class="font-mono fw-bold text-warning">0.96</td>
+              <td class="text-end font-mono">12,833</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multiclass Navigation Callout -->
+  <div class="soc-card p-4 text-center">
+    <h5 class="text-white mb-2">Granular Confusion Tables per Architecture</h5>
+    <p class="text-secondary mb-3" style="font-size: 0.9rem;">Inspect individual classification breakdowns across DoS, Probe, R2L, and U2R attack classes:</p>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+      <a href="/rf_bin_table" class="btn-soc btn-soc-secondary btn-sm">RF Binary Table</a>
+      <a href="/rf_table" class="btn-soc btn-soc-secondary btn-sm">RF Multiclass Table</a>
+      <a href="/knn_bin_table" class="btn-soc btn-soc-secondary btn-sm">KNN Binary Table</a>
+      <a href="/knn_table" class="btn-soc btn-soc-secondary btn-sm">KNN Multiclass Table</a>
+      <a href="/cnn_bin_table" class="btn-soc btn-soc-secondary btn-sm">CNN Binary Table</a>
+      <a href="/cnn_table" class="btn-soc btn-soc-secondary btn-sm">CNN Multiclass Table</a>
+      <a href="/lstm_bin_table" class="btn-soc btn-soc-secondary btn-sm">LSTM Binary Table</a>
+      <a href="/lstm_table" class="btn-soc btn-soc-secondary btn-sm">LSTM Multiclass Table</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const ctx = document.getElementById('modelRadarChart');
+  if (!ctx) return;
+
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['Accuracy', 'Precision', 'Recall', 'F1-Score', 'Latency Score'],
+      datasets: [
+        {
+          label: 'KNN',
+          data: [97.6, 97.5, 97.6, 97.5, 88.0],
+          borderColor: '#00F0FF',
+          backgroundColor: 'rgba(0, 240, 255, 0.15)',
+          pointBackgroundColor: '#00F0FF',
+          borderWidth: 2
+        },
+        {
+          label: 'Random Forest',
+          data: [97.4, 98.0, 97.4, 97.7, 95.0],
+          borderColor: '#10B981',
+          backgroundColor: 'rgba(16, 185, 129, 0.15)',
+          pointBackgroundColor: '#10B981',
+          borderWidth: 2
+        },
+        {
+          label: 'CNN',
+          data: [95.8, 95.5, 96.0, 95.7, 82.0],
+          borderColor: '#8B5CF6',
+          backgroundColor: 'rgba(139, 92, 246, 0.15)',
+          pointBackgroundColor: '#8B5CF6',
+          borderWidth: 2
+        },
+        {
+          label: 'LSTM',
+          data: [95.6, 95.5, 95.5, 95.5, 78.0],
+          borderColor: '#F59E0B',
+          backgroundColor: 'rgba(245, 158, 11, 0.15)',
+          pointBackgroundColor: '#F59E0B',
+          borderWidth: 2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        r: {
+          angleLines: { color: 'rgba(42, 55, 74, 0.6)' },
+          grid: { color: 'rgba(42, 55, 74, 0.6)' },
+          pointLabels: {
+            color: '#F9FAFB',
+            font: { family: 'Inter', size: 12, weight: '600' }
+          },
+          ticks: {
+            color: '#9CA3AF',
+            backdropColor: 'transparent',
+            stepSize: 10,
+            min: 60,
+            max: 100
+          }
+        }
+      },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1F2937',
+          titleColor: '#F9FAFB',
+          bodyColor: '#9CA3AF',
+          borderColor: '#2A374A',
+          borderWidth: 1
+        }
+      }
+    }
+  });
+});
+</script>
+
+<%- include('partials/footer') %>

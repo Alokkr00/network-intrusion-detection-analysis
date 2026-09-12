@@ -1,0 +1,241 @@
+<%- include('partials/header') %>
+
+<div class="container-fluid px-lg-5 py-5">
+  
+  <% const hasData = typeof totalRows !== 'undefined' && totalRows > 0; %>
+
+  <!-- Header Banner -->
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-3 border-bottom border-secondary-subtle">
+    <div>
+      <div class="d-inline-flex align-items-center gap-2 mb-2">
+        <span class="soc-badge badge-glow-purple"><i class="fas fa-chart-pie"></i> Batch Analysis Report</span>
+        <span class="soc-badge badge-glow-cyan"><i class="fas fa-microchip"></i> Model: <%= typeof algorithm !== 'undefined' ? algorithm : 'Ensemble' %></span>
+      </div>
+      <h1 class="display-6 text-white fw-bold mb-1">Traffic Classification Posture</h1>
+      <p class="text-secondary mb-0">Telemetry report for dataset: <strong class="text-white font-mono"><%= typeof fileName !== 'undefined' && fileName ? fileName : 'Capture_Batch.csv' %></strong></p>
+    </div>
+
+    <div>
+      <a href="/download-file" class="btn-soc btn-soc-primary">
+        <i class="fas fa-download"></i> Export Annotated Dataset
+      </a>
+    </div>
+  </div>
+
+  <% if (!hasData) { %>
+    <!-- Empty State Guidance (Fixes Empty State Flaw) -->
+    <div class="soc-card p-5 text-center my-4">
+      <i class="fas fa-file-circle-question fa-4x mb-3 text-secondary"></i>
+      <h3 class="text-white">No Batch Telemetry Processed Yet</h3>
+      <p class="text-secondary" style="max-width: 500px; margin: 0 auto 24px;">
+        Upload a network traffic capture file (such as the NSL-KDD test set) to generate real-time multi-model intrusion analytics.
+      </p>
+      <div>
+        <a href="/csv" class="btn-soc btn-soc-primary"><i class="fas fa-upload"></i> Upload CSV Dataset</a>
+        <a href="/submit" class="btn-soc btn-soc-secondary ms-2"><i class="fas fa-gauge-high"></i> Dashboard</a>
+      </div>
+    </div>
+  <% } else { %>
+
+    <!-- KPI Summary Row -->
+    <div class="row g-4 mb-4 text-center">
+      
+      <!-- Total Packets -->
+      <div class="col-md-4">
+        <div class="soc-card p-4">
+          <small class="text-secondary d-block text-uppercase font-mono mb-1">Total Packets Analyzed</small>
+          <span class="display-5 fw-bold font-mono text-white"><%= totalRows.toLocaleString() %></span>
+          <small class="text-secondary d-block mt-1">16 Vector Attributes Evaluated</small>
+        </div>
+      </div>
+
+      <!-- Benign Traffic -->
+      <div class="col-md-4">
+        <div class="soc-card p-4" style="border-left: 4px solid var(--soc-emerald-safe);">
+          <small class="text-secondary d-block text-uppercase font-mono mb-1">Benign / Normal Traffic</small>
+          <span class="display-5 fw-bold font-mono" style="color: var(--soc-emerald-safe);"><%= normalCount.toLocaleString() %></span>
+          <small class="text-secondary d-block mt-1 font-mono">
+            <%= totalRows > 0 ? Math.round((normalCount / totalRows) * 100) : 0 %>% of traffic stream
+          </small>
+        </div>
+      </div>
+
+      <!-- Threat Traffic -->
+      <div class="col-md-4">
+        <div class="soc-card p-4" style="border-left: 4px solid var(--soc-crimson-critical);">
+          <small class="text-secondary d-block text-uppercase font-mono mb-1">Intrusions / Attacks Detected</small>
+          <span class="display-5 fw-bold font-mono" style="color: var(--soc-crimson-critical);"><%= attackCount.toLocaleString() %></span>
+          <small class="d-block mt-1 font-mono text-danger">
+            <%= typeof attackPercentage !== 'undefined' ? attackPercentage : 0 %>% overall threat ratio
+          </small>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Analytics & Breakdown Section (Zero-CLS Layout) -->
+    <div class="row g-4 mb-4">
+      
+      <!-- Interactive Chart.js Doughnut -->
+      <div class="col-lg-5">
+        <div class="soc-card h-100">
+          <div class="soc-card-header">
+            <h5 class="mb-0 text-white"><i class="fas fa-chart-donut me-2" style="color: var(--soc-neon-cyan);"></i>Threat Category Distribution</h5>
+            <span class="soc-badge badge-glow-cyan" style="font-size: 0.7rem;">Chart.js Visualizer</span>
+          </div>
+          <div class="soc-card-body d-flex flex-column align-items-center justify-content-center">
+            
+            <!-- Reserved Aspect-Ratio Container (Zero CLS) -->
+            <div class="chart-container-reserved w-100" style="max-height: 280px;">
+              <canvas id="threatDoughnutChart"></canvas>
+            </div>
+
+            <div class="d-flex flex-wrap justify-content-center gap-3 mt-3 text-secondary" style="font-size: 0.8rem;">
+              <span><i class="fas fa-circle me-1" style="color: #10B981;"></i> Normal</span>
+              <span><i class="fas fa-circle me-1" style="color: #EF4444;"></i> DoS</span>
+              <span><i class="fas fa-circle me-1" style="color: #F59E0B;"></i> Probe</span>
+              <span><i class="fas fa-circle me-1" style="color: #00F0FF;"></i> R2L</span>
+              <span><i class="fas fa-circle me-1" style="color: #8B5CF6;"></i> U2R</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- MITRE ATT&CK Posture Table -->
+      <div class="col-lg-7">
+        <div class="soc-card h-100">
+          <div class="soc-card-header">
+            <h5 class="mb-0 text-white"><i class="fas fa-shield-virus me-2" style="color: var(--soc-amber-warning);"></i>MITRE ATT&CK® Posture Breakdown</h5>
+            <span class="soc-badge badge-glow-warning" style="font-size: 0.7rem;">Tactical Mapping</span>
+          </div>
+          <div class="soc-card-body p-0">
+            <div class="table-responsive-soc">
+              <table class="table-soc">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>MITRE Technique</th>
+                    <th>Severity</th>
+                    <th class="text-end">Detected</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><i class="fas fa-check-circle text-success me-2"></i><strong>Normal</strong></td>
+                    <td class="font-mono text-secondary">BENIGN-001 (Baseline)</td>
+                    <td><span class="soc-badge badge-glow-safe" style="font-size: 0.65rem;">SAFE</span></td>
+                    <td class="text-end font-mono fw-bold text-success"><%= normalCount.toLocaleString() %></td>
+                  </tr>
+                  <tr>
+                    <td><i class="fas fa-radiation text-danger me-2"></i><strong>DoS Flood</strong></td>
+                    <td class="font-mono text-secondary">T1498 (Network DoS)</td>
+                    <td><span class="soc-badge badge-glow-critical" style="font-size: 0.65rem;">CRITICAL</span></td>
+                    <td class="text-end font-mono fw-bold text-danger"><%= (breakdown.dos || 0).toLocaleString() %></td>
+                  </tr>
+                  <tr>
+                    <td><i class="fas fa-search-location text-warning me-2"></i><strong>Probe Recon</strong></td>
+                    <td class="font-mono text-secondary">T1046 (Service Discovery)</td>
+                    <td><span class="soc-badge badge-glow-warning" style="font-size: 0.65rem;">HIGH</span></td>
+                    <td class="text-end font-mono fw-bold text-warning"><%= (breakdown.probe || 0).toLocaleString() %></td>
+                  </tr>
+                  <tr>
+                    <td><i class="fas fa-network-wired text-info me-2"></i><strong>R2L Infiltration</strong></td>
+                    <td class="font-mono text-secondary">T1078 (Valid Accounts)</td>
+                    <td><span class="soc-badge badge-glow-cyan" style="font-size: 0.65rem;">HIGH</span></td>
+                    <td class="text-end font-mono fw-bold" style="color: var(--soc-neon-cyan);"><%= (breakdown.r2l || 0).toLocaleString() %></td>
+                  </tr>
+                  <tr>
+                    <td><i class="fas fa-user-secret text-danger me-2"></i><strong>U2R Escalation</strong></td>
+                    <td class="font-mono text-secondary">T1068 (Privilege Escalation)</td>
+                    <td><span class="soc-badge badge-glow-critical" style="font-size: 0.65rem;">SEVERE</span></td>
+                    <td class="text-end font-mono fw-bold text-danger"><%= (breakdown.u2r || 0).toLocaleString() %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Download & Action Callout -->
+    <div class="soc-card p-4 text-center">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3">
+        <div class="text-start">
+          <strong class="text-white d-block">Annotated Dataset Ready for Export</strong>
+          <span class="text-secondary" style="font-size: 0.85rem;">Includes appended <code>binary class</code> and <code>multi class</code> columns for all <%= totalRows.toLocaleString() %> records.</span>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+          <a href="/download-file" class="btn-soc btn-soc-primary">
+            <i class="fas fa-download"></i> Download CSV
+          </a>
+          <a href="/csv" class="btn-soc btn-soc-secondary">
+            <i class="fas fa-upload"></i> Analyze Another File
+          </a>
+          <a href="/submit" class="btn-soc btn-soc-outline-cyan">
+            <i class="fas fa-gauge-high"></i> Operations Hub
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    // Initialize Chart.js Threat Distribution Doughnut
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('threatDoughnutChart');
+      if (!ctx) return;
+
+      const chartData = {
+        labels: ['Normal', 'DoS', 'Probe', 'R2L', 'U2R'],
+        datasets: [{
+          data: [
+            <%= normalCount %>,
+            <%= breakdown.dos || 0 %>,
+            <%= breakdown.probe || 0 %>,
+            <%= breakdown.r2l || 0 %>,
+            <%= breakdown.u2r || 0 %>
+          ],
+          backgroundColor: [
+            '#10B981', // Safe Emerald
+            '#EF4444', // Critical Crimson
+            '#F59E0B', // Warning Amber
+            '#00F0FF', // Neon Cyan
+            '#8B5CF6'  // Model Purple
+          ],
+          borderWidth: 2,
+          borderColor: '#111827',
+          hoverOffset: 8
+        }]
+      };
+
+      new Chart(ctx, {
+        type: 'doughnut',
+        data: chartData,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '68%',
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#1F2937',
+              titleColor: '#F9FAFB',
+              bodyColor: '#9CA3AF',
+              borderColor: '#2A374A',
+              borderWidth: 1,
+              padding: 12,
+              displayColors: true
+            }
+          }
+        }
+      });
+    });
+    </script>
+
+  <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

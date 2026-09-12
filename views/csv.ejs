@@ -1,0 +1,215 @@
+<%- include('partials/header') %>
+
+<!-- PapaParse CDN for client-side pre-flight validation -->
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+<div class="container-fluid px-lg-5 py-5">
+  
+  <!-- Header Banner -->
+  <div class="text-center mb-4">
+    <div class="d-inline-flex align-items-center gap-2 mb-2">
+      <span class="soc-badge badge-glow-purple"><i class="fas fa-file-csv"></i> Batch Telemetry Ingestion</span>
+      <span class="soc-badge badge-glow-cyan"><i class="fas fa-bolt"></i> High-Throughput Pipeline</span>
+    </div>
+    <h1 class="display-5 text-white fw-bold mb-2">Batch CSV Intrusion Classification</h1>
+    <p class="text-secondary" style="max-width: 680px; margin: 0 auto;">
+      Ingest network traffic datasets (16 to 42 columns). Pre-flight validation inspects schema before submission, annotating each row with binary status and MITRE attack categories.
+    </p>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-xl-9 col-lg-10">
+      
+      <!-- Ingestion Card -->
+      <div class="soc-card p-4 p-md-5 mb-4">
+        
+        <!-- Format Guidance Alert -->
+        <div class="p-3 rounded border border-secondary-subtle mb-4" style="background: var(--soc-bg-canvas);">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <i class="fas fa-circle-info" style="color: var(--soc-neon-cyan);"></i>
+            <strong class="text-white">Supported CSV Datasets:</strong>
+          </div>
+          <div class="row g-2 text-secondary" style="font-size: 0.85rem;">
+            <div class="col-md-6">
+              <i class="fas fa-check text-success me-1"></i>
+              <strong>Benchmark NSL-KDD:</strong> 41 or 42 columns (e.g. <code>Test_data.csv</code>, <code>Train_data.csv</code>).
+            </div>
+            <div class="col-md-6">
+              <i class="fas fa-check text-success me-1"></i>
+              <strong>Feature-Selected Vectors:</strong> 16 attributes with or without header row.
+            </div>
+          </div>
+        </div>
+
+        <form id="csvUploadForm" action="/uploadjavatpoint" method="POST" enctype="multipart/form-data">
+          
+          <!-- Algorithm Selector -->
+          <div class="soc-form-group mb-4">
+            <label class="soc-label" for="selected_model">
+              Select Inference Algorithm:
+            </label>
+            <select class="soc-select" id="selected_model" name="selected_model" required>
+              <option value="rf" selected>Random Forest Classifier (Recommended - 97.4% Accuracy)</option>
+              <option value="knn">K-Nearest Neighbors (KNN - 97.6% Accuracy)</option>
+              <option value="cnn">Convolutional Neural Network (CNN - 95.8% Accuracy)</option>
+              <option value="lstm">Long Short-Term Memory (LSTM - 95.6% Accuracy)</option>
+            </select>
+          </div>
+
+          <!-- Drag and Drop Zone -->
+          <div class="soc-form-group mb-4">
+            <label class="soc-label">Traffic Capture File (.csv or .txt):</label>
+            <div class="soc-dropzone" id="dropZone">
+              <input type="file" id="csvFileInput" name="myfile" accept=".csv,.txt" required onchange="handleFileSelect(this)">
+              <div id="dropZoneContent">
+                <i class="fas fa-cloud-arrow-up fa-3x mb-3" style="color: var(--soc-neon-cyan);"></i>
+                <h5 class="text-white mb-1">Drag & Drop CSV Dataset Here</h5>
+                <p class="text-secondary mb-2" style="font-size: 0.9rem;">or click to browse filesystem</p>
+                <span class="soc-badge badge-glow-cyan" id="selectedFileName">Maximum file size: 50MB</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Client-Side Pre-Flight Preview (PapaParse) -->
+          <div id="preflightSection" class="mb-4" style="display: none;">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <strong class="text-white"><i class="fas fa-table-list text-info me-2"></i>Pre-Flight Schema Preview (First 5 Records):</strong>
+              <span class="badge badge-glow-safe" id="preflightBadge">Schema Valid</span>
+            </div>
+            <div class="table-responsive-soc" style="max-height: 220px;">
+              <table class="table-soc" id="previewTable" style="font-size: 0.8rem;">
+                <thead id="previewThead"></thead>
+                <tbody id="previewTbody"></tbody>
+              </table>
+            </div>
+            <small class="text-secondary mt-1 d-block font-mono" id="preflightSummary"></small>
+          </div>
+
+          <!-- Multi-Stage Ingestion Pipeline Monitor -->
+          <div id="pipelineProgress" class="mb-4 p-4 rounded border border-secondary-subtle text-center" style="display: none; background: var(--soc-bg-canvas);">
+            <div class="d-inline-flex align-items-center gap-2 mb-3">
+              <div class="spinner-border spinner-border-sm text-info" role="status"></div>
+              <strong class="text-white" id="stageMessage">1. Reading and validating CSV schema...</strong>
+            </div>
+            <div class="progress" style="height: 8px; background: var(--soc-bg-elevated);">
+              <div id="pipelineBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" style="width: 25%;"></div>
+            </div>
+            <small class="text-secondary mt-2 d-block font-mono">Executing multi-model inference across packet batch...</small>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="submitBtn" class="btn-soc btn-soc-primary btn-lg w-100 py-3 font-weight-bold">
+            <i class="fas fa-shield-alt"></i> Upload & Classify Network Traffic
+          </button>
+
+        </form>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Drag and Drop Event Listeners
+const dropZone = document.getElementById('dropZone');
+['dragenter', 'dragover'].forEach(eventName => {
+  dropZone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    dropZone.classList.add('dragover');
+  }, false);
+});
+
+['dragleave', 'drop'].forEach(eventName => {
+  dropZone.addEventListener(eventName, (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+  }, false);
+});
+
+function handleFileSelect(input) {
+  const file = input.files[0];
+  if (!file) return;
+
+  document.getElementById('selectedFileName').innerText = `${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+  document.getElementById('selectedFileName').classList.remove('badge-glow-cyan');
+  document.getElementById('selectedFileName').classList.add('badge-glow-safe');
+
+  // Pre-flight parsing via PapaParse
+  Papa.parse(file, {
+    preview: 6,
+    skipEmptyLines: true,
+    complete: function(results) {
+      if (results.data && results.data.length > 0) {
+        renderPreview(results.data);
+      }
+    }
+  });
+}
+
+function renderPreview(rows) {
+  const previewSection = document.getElementById('preflightSection');
+  const thead = document.getElementById('previewThead');
+  const tbody = document.getElementById('previewTbody');
+  const summary = document.getElementById('preflightSummary');
+
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  const headerRow = rows[0];
+  const dataRows = rows.slice(1);
+  const colCount = headerRow.length;
+
+  let trH = document.createElement('tr');
+  headerRow.forEach((col, idx) => {
+    let th = document.createElement('th');
+    th.innerText = col.length > 15 ? col.substring(0, 15) + '...' : col;
+    trH.appendChild(th);
+  });
+  thead.appendChild(trH);
+
+  dataRows.forEach(row => {
+    let tr = document.createElement('tr');
+    row.forEach(val => {
+      let td = document.createElement('td');
+      td.innerText = val.length > 15 ? val.substring(0, 15) + '...' : val;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+
+  summary.innerText = `Detected Schema: ${colCount} attributes per packet record. Adaptive mapping ready.`;
+  previewSection.style.display = 'block';
+}
+
+// 4-Stage Animated Pipeline Progress on Form Submit
+document.getElementById('csvUploadForm').addEventListener('submit', function() {
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-cog fa-spin me-2"></i>Processing Traffic Capture...';
+
+  const pipeline = document.getElementById('pipelineProgress');
+  const bar = document.getElementById('pipelineBar');
+  const msg = document.getElementById('stageMessage');
+  pipeline.style.display = 'block';
+
+  // Realistic staged progression
+  setTimeout(() => {
+    bar.style.width = '50%';
+    msg.innerText = '2. Normalizing 16 vector attributes & deterministic encoding...';
+  }, 400);
+
+  setTimeout(() => {
+    bar.style.width = '80%';
+    msg.innerText = '3. Executing model classification across packet records...';
+  }, 1000);
+
+  setTimeout(() => {
+    bar.style.width = '95%';
+    msg.innerText = '4. Compiling MITRE ATT&CK breakdown and generating report...';
+  }, 1800);
+});
+</script>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,611 @@
+/**
+ * Aegis SOC Dark Design System
+ * Enterprise Network Intrusion Detection & Threat Intelligence Console
+ * 
+ * Specifications:
+ * - WCAG 2.1 AA Compliant Contrast Ratios (>= 4.5:1, Primary Text >= 16:1)
+ * - Zero Cumulative Layout Shift (CLS) Architecture
+ * - Touch Targets >= 44px x 44px
+ * - Accessible Keyboard Focus States (:focus-visible)
+ * - Safe-Area Inset Support for Mobile Notches
+ * - Reduced Motion Sensitivity Support
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* Surface & Canvas Tokens */
+  --soc-bg-canvas: #0A0E17;
+  --soc-bg-surface: #111827;
+  --soc-bg-elevated: #1F2937;
+  --soc-bg-header: rgba(17, 24, 39, 0.95);
+  --soc-border-subtle: #2A374A;
+  --soc-border-hover: #374151;
+  --soc-border-active: #00F0FF;
+
+  /* Threat Status Accents */
+  --soc-neon-cyan: #00F0FF;
+  --soc-crimson-critical: #EF4444;
+  --soc-amber-warning: #F59E0B;
+  --soc-emerald-safe: #10B981;
+  --soc-purple-model: #8B5CF6;
+  --soc-blue-info: #3B82F6;
+
+  /* Text Colors */
+  --soc-text-primary: #F9FAFB;
+  --soc-text-secondary: #9CA3AF;
+  --soc-text-muted: #6B7280;
+  --soc-text-inverse: #0A0E17;
+
+  /* Spacing Scale (8px Modular) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+
+  /* Layout & Navigation */
+  --nav-height: 72px;
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Typography */
+  --soc-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --soc-font-mono: 'JetBrains Mono', SFMono-Regular, Consolas, monospace;
+
+  /* Transitions */
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Base Reset & Layout Consistency
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--soc-bg-canvas);
+  color: var(--soc-text-primary);
+  font-family: var(--soc-font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Skip-to-content accessible link */
+.skip-to-content {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--soc-neon-cyan);
+  color: var(--soc-text-inverse);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top var(--transition-fast);
+}
+
+.skip-to-content:focus {
+  top: 16px;
+}
+
+/* Safe Area Inset Support */
+@supports (padding-top: env(safe-area-inset-top)) {
+  .soc-navbar {
+    padding-top: max(var(--space-2), env(safe-area-inset-top));
+  }
+  .soc-footer {
+    padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+  }
+}
+
+/* ==========================================================================
+   Typography & Vertical Rhythm
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--soc-text-primary);
+  font-family: var(--soc-font-sans);
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2rem, 4vw, 3rem); }
+h2 { font-size: clamp(1.6rem, 3vw, 2.25rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.1rem; }
+h6 { font-size: 0.95rem; }
+
+p {
+  margin-top: 0;
+  margin-bottom: var(--space-3);
+  color: var(--soc-text-secondary);
+}
+
+code, pre, .font-mono {
+  font-family: var(--soc-font-mono);
+}
+
+/* Keyboard Focus Ring */
+:focus-visible {
+  outline: 2px solid var(--soc-neon-cyan) !important;
+  outline-offset: 3px !important;
+}
+
+/* ==========================================================================
+   Navigation Bar
+   ========================================================================== */
+.soc-navbar {
+  background: var(--soc-bg-header);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--soc-border-subtle);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  min-height: var(--nav-height);
+  display: flex;
+  align-items: center;
+}
+
+.soc-navbar .navbar-brand {
+  font-family: var(--soc-font-sans);
+  font-weight: 800;
+  font-size: 1.35rem;
+  color: var(--soc-text-primary) !important;
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.soc-navbar .navbar-brand i {
+  color: var(--soc-neon-cyan);
+  filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.6));
+}
+
+.soc-nav-link {
+  color: var(--soc-text-secondary) !important;
+  font-weight: 500;
+  padding: var(--space-2) var(--space-3) !important;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  min-height: 44px;
+}
+
+.soc-nav-link:hover, .soc-nav-link:focus-visible {
+  color: var(--soc-neon-cyan) !important;
+  background: rgba(0, 240, 255, 0.08);
+}
+
+.soc-nav-link.active {
+  color: var(--soc-neon-cyan) !important;
+  background: rgba(0, 240, 255, 0.12);
+  border-bottom: 2px solid var(--soc-neon-cyan);
+}
+
+.soc-system-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  font-family: var(--soc-font-mono);
+  color: var(--soc-emerald-safe);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.soc-pulse-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--soc-emerald-safe);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--soc-emerald-safe);
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 12px var(--soc-emerald-safe); }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* ==========================================================================
+   Card Component System
+   ========================================================================== */
+.soc-card {
+  background: var(--soc-bg-surface);
+  border: 1px solid var(--soc-border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  transition: transform var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.soc-card:hover {
+  border-color: var(--soc-border-hover);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+}
+
+.soc-card-active {
+  border-color: var(--soc-border-active);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+}
+
+.soc-card-header {
+  background: var(--soc-bg-elevated);
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--soc-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.soc-card-body {
+  padding: var(--space-4);
+  flex: 1 1 auto;
+}
+
+.soc-card-footer {
+  background: rgba(17, 24, 39, 0.6);
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--soc-border-subtle);
+}
+
+/* ==========================================================================
+   Buttons & Interactive Touch Targets (>= 44px)
+   ========================================================================== */
+.btn-soc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-family: var(--soc-font-sans);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-soc:active {
+  transform: scale(0.98);
+}
+
+.btn-soc-primary {
+  background: var(--soc-neon-cyan);
+  color: var(--soc-text-inverse);
+  box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+}
+
+.btn-soc-primary:hover, .btn-soc-primary:focus-visible {
+  background: #25f4ff;
+  color: var(--soc-text-inverse);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.5);
+}
+
+.btn-soc-secondary {
+  background: var(--soc-bg-elevated);
+  color: var(--soc-text-primary);
+  border-color: var(--soc-border-subtle);
+}
+
+.btn-soc-secondary:hover, .btn-soc-secondary:focus-visible {
+  background: #283548;
+  color: var(--soc-neon-cyan);
+  border-color: var(--soc-neon-cyan);
+}
+
+.btn-soc-danger {
+  background: var(--soc-crimson-critical);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.3);
+}
+
+.btn-soc-danger:hover, .btn-soc-danger:focus-visible {
+  background: #f87171;
+  color: #ffffff;
+  box-shadow: 0 0 25px rgba(239, 68, 68, 0.5);
+}
+
+.btn-soc-outline-cyan {
+  background: transparent;
+  color: var(--soc-neon-cyan);
+  border-color: var(--soc-neon-cyan);
+}
+
+.btn-soc-outline-cyan:hover, .btn-soc-outline-cyan:focus-visible {
+  background: rgba(0, 240, 255, 0.12);
+  color: var(--soc-neon-cyan);
+}
+
+/* ==========================================================================
+   Glowing Status Badges
+   ========================================================================== */
+.soc-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: var(--soc-font-mono);
+  border-radius: var(--radius-full);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  min-height: 28px;
+}
+
+.badge-glow-critical {
+  color: var(--soc-crimson-critical);
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+}
+
+.badge-glow-warning {
+  color: var(--soc-amber-warning);
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+.badge-glow-safe {
+  color: var(--soc-emerald-safe);
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.5);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.badge-glow-cyan {
+  color: var(--soc-neon-cyan);
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.25);
+}
+
+.badge-glow-purple {
+  color: var(--soc-purple-model);
+  background: rgba(139, 92, 246, 0.15);
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+}
+
+/* ==========================================================================
+   Form Controls with Persistent Labels
+   ========================================================================== */
+.soc-form-group {
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.soc-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--soc-text-primary);
+  margin-bottom: var(--space-1);
+  letter-spacing: 0.02em;
+}
+
+.soc-label small {
+  color: var(--soc-text-muted);
+  font-weight: 400;
+  margin-left: var(--space-1);
+}
+
+.soc-input, .soc-select {
+  width: 100%;
+  min-height: 44px;
+  background: var(--soc-bg-canvas);
+  border: 1px solid var(--soc-border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--soc-text-primary);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--soc-font-mono);
+  font-size: 0.95rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.soc-input:focus, .soc-select:focus {
+  border-color: var(--soc-neon-cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+  outline: none;
+}
+
+.soc-input::placeholder {
+  color: var(--soc-text-muted);
+}
+
+/* ==========================================================================
+   Drag & Drop Zone (Batch CSV)
+   ========================================================================== */
+.soc-dropzone {
+  border: 2px dashed var(--soc-border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-6) var(--space-4);
+  text-align: center;
+  background: rgba(31, 41, 55, 0.3);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  position: relative;
+}
+
+.soc-dropzone:hover, .soc-dropzone.dragover {
+  border-color: var(--soc-neon-cyan);
+  background: rgba(0, 240, 255, 0.05);
+  box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+}
+
+.soc-dropzone input[type="file"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   Zero-CLS Chart Containers
+   ========================================================================== */
+.chart-container-reserved {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 280px;
+  max-height: 420px;
+}
+
+/* ==========================================================================
+   Responsive High-Density Tables
+   ========================================================================== */
+.table-responsive-soc {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--soc-border-subtle);
+  background: var(--soc-bg-surface);
+}
+
+.table-soc {
+  width: 100%;
+  margin-bottom: 0;
+  color: var(--soc-text-primary);
+  border-collapse: collapse;
+}
+
+.table-soc th {
+  background: var(--soc-bg-elevated);
+  color: var(--soc-neon-cyan);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--soc-border-subtle);
+  white-space: nowrap;
+}
+
+.table-soc td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid rgba(42, 55, 74, 0.5);
+  font-size: 0.95rem;
+  vertical-align: middle;
+}
+
+.table-soc tbody tr:hover {
+  background: rgba(31, 41, 55, 0.4);
+}
+
+/* ==========================================================================
+   Defensive Containment Terminal Code Block
+   ========================================================================== */
+.soc-terminal-block {
+  background: #05080f;
+  border: 1px solid var(--soc-border-subtle);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  position: relative;
+  margin-top: var(--space-2);
+}
+
+.soc-terminal-code {
+  font-family: var(--soc-font-mono);
+  font-size: 0.85rem;
+  color: #38bdf8;
+  white-space: pre-wrap;
+  word-break: break-all;
+  display: block;
+}
+
+.soc-copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--soc-bg-elevated);
+  border: 1px solid var(--soc-border-subtle);
+  color: var(--soc-text-secondary);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.soc-copy-btn:hover {
+  color: var(--soc-neon-cyan);
+  border-color: var(--soc-neon-cyan);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.soc-footer {
+  margin-top: auto;
+  background: var(--soc-bg-surface);
+  border-top: 1px solid var(--soc-border-subtle);
+  padding: var(--space-5) 0 var(--space-4);
+  color: var(--soc-text-secondary);
+  font-size: 0.875rem;
+}
+
+.soc-footer a {
+  color: var(--soc-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.soc-footer a:hover {
+  color: var(--soc-neon-cyan);
+}
+
+/* ==========================================================================
+   Reduced Motion Accessibility Preference
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
