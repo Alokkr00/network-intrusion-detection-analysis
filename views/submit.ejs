@@ -35,7 +35,7 @@
             </p>
           </div>
           <div class="mt-4 pt-3 border-top border-secondary-subtle">
-            <a href="/secrets" class="btn-soc btn-soc-primary w-100" id="runRandomBtn" onclick="this.innerHTML='<i class=\"fas fa-cog fa-spin\"></i> Sampling & Analyzing...'; this.classList.add('disabled');">
+            <a href="/secrets" class="btn-soc btn-soc-primary w-100" id="runRandomBtn">
               <i class="fas fa-play"></i> Execute Random Triage
             </a>
           </div>
@@ -115,5 +115,18 @@
   </div>
 
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const btn = document.getElementById('runRandomBtn');
+  if (btn) {
+    btn.addEventListener('click', function() {
+      this.innerHTML = '<i class="fas fa-cog fa-spin me-2"></i> Sampling & Analyzing...';
+      this.classList.add('disabled');
+      this.style.pointerEvents = 'none';
+    });
+  }
+});
+</script>
 
 <%- include('partials/footer') %>

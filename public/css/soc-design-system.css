@@ -197,13 +197,15 @@ code, pre, .font-mono {
 .soc-nav-link {
   color: var(--soc-text-secondary) !important;
   font-weight: 500;
-  padding: var(--space-2) var(--space-3) !important;
+  padding: 6px 10px !important;
   border-radius: var(--radius-sm);
   transition: all var(--transition-fast);
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  min-height: 44px;
+  gap: 6px;
+  min-height: 40px;
+  white-space: nowrap !important;
+  font-size: 0.88rem;
 }
 
 .soc-nav-link:hover, .soc-nav-link:focus-visible {
