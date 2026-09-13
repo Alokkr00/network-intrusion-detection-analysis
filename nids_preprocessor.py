@@ -143,6 +143,7 @@ def extract_features_from_csv(csv_path):
     - 16-column pre-selected feature dataset (with or without headers)
     Returns: (processed_dataframe_with_16_features, original_dataframe)
     """
+    import pandas as pd
     with open(csv_path, 'r', encoding='utf-8', errors='ignore') as f:
         first_line = f.readline().strip()
         
