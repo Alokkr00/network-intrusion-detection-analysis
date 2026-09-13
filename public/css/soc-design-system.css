@@ -108,13 +108,21 @@ body {
   top: 16px;
 }
 
-/* Safe Area Inset Support */
+/* Safe Area Inset Support (Notch & Home Indicator) */
 @supports (padding-top: env(safe-area-inset-top)) {
   .soc-navbar {
     padding-top: max(var(--space-2), env(safe-area-inset-top));
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
   }
   .soc-footer {
     padding-bottom: max(var(--space-4), env(safe-area-inset-bottom));
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
+  }
+  .container-fluid, .container {
+    padding-left: max(var(--space-3), env(safe-area-inset-left));
+    padding-right: max(var(--space-3), env(safe-area-inset-right));
   }
 }
 
@@ -574,6 +582,50 @@ code, pre, .font-mono {
 .soc-copy-btn:hover {
   color: var(--soc-neon-cyan);
   border-color: var(--soc-neon-cyan);
+}
+
+.soc-copy-btn.copied {
+  background: rgba(16, 185, 129, 0.2) !important;
+  border-color: var(--soc-emerald-safe) !important;
+  color: var(--soc-emerald-safe) !important;
+}
+
+/* ==========================================================================
+   Utility & Edge-Case Classes
+   ========================================================================== */
+.text-break-word {
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto;
+}
+
+.soc-empty-state {
+  text-align: center;
+  padding: var(--space-6) var(--space-4);
+  background: var(--soc-bg-surface);
+  border: 1px dashed var(--soc-border-subtle);
+  border-radius: var(--radius-md);
+  margin: var(--space-4) 0;
+}
+
+.soc-empty-state-icon {
+  font-size: 3rem;
+  color: var(--soc-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.soc-empty-state-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--soc-text-primary);
+  margin-bottom: var(--space-2);
+}
+
+.soc-empty-state-desc {
+  color: var(--soc-text-secondary);
+  max-width: 520px;
+  margin: 0 auto var(--space-4);
+  line-height: 1.6;
 }
 
 /* ==========================================================================
