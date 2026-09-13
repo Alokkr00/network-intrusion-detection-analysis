@@ -1,143 +1,178 @@
-<%- include('partials/header') %>
+﻿<%- include('partials/header') %>
 
 <div class="container-fluid px-lg-5 py-5">
   
   <!-- Hero Section -->
-  <div class="row align-items-center py-4 mb-5">
+  <div class="row align-items-center py-3 mb-5">
     <div class="col-lg-7 text-start pe-lg-5">
       
       <div class="d-inline-flex align-items-center gap-2 mb-3">
-        <span class="soc-badge badge-glow-cyan"><i class="fas fa-shield-virus"></i> Enterprise Threat Console</span>
-        <span class="soc-badge badge-glow-purple"><i class="fas fa-brain"></i> Multi-Model AI/ML</span>
+        <span class="soc-badge badge-glow-cyan"><i class="fas fa-shield-halved me-1"></i> Open-Source ML Research</span>
+        <span class="soc-badge badge-glow-safe"><i class="fas fa-check-circle me-1"></i> 97.6% Benchmark Accuracy</span>
       </div>
 
-      <h1 class="display-4 fw-bold mb-3 text-white">
-        Next-Generation Network Intrusion Detection
+      <h1 class="display-5 fw-bold mb-3 text-white">
+        Network Intrusion Detection System
       </h1>
 
-      <p class="lead text-secondary mb-4" style="font-size: 1.15rem; max-width: 640px;">
-        High-throughput packet anomaly detection powered by hybrid machine learning models, correlated with the 
-        <span class="text-white fw-semibold">MITRE ATT&CK® Enterprise Framework</span>, delivering sub-second triage telemetry and instant defensive containment playbooks.
+      <p class="lead text-secondary mb-4" style="font-size: 1.05rem; max-width: 620px;">
+        Empirical packet anomaly detection powered by hybrid machine learning architectures, correlated with the 
+        <strong class="text-white">MITRE ATT&CK® Enterprise Matrix</strong> for sub-second classification and tactical defensive containment.
       </p>
 
       <div class="d-flex flex-wrap gap-3 mb-4">
         <a href="/submit" class="btn-soc btn-soc-primary">
-          <i class="fas fa-gauge-high"></i> Launch Detection Console
+          <i class="fas fa-play"></i> Launch Operations
         </a>
-        <a href="/csv" class="btn-soc btn-soc-outline-cyan">
-          <i class="fas fa-file-csv"></i> Batch CSV Triage
+        <a href="/csv" class="btn-soc btn-soc-secondary">
+          <i class="fas fa-file-csv"></i> Batch CSV Upload
         </a>
-        <a href="/parameters" class="btn-soc btn-soc-secondary">
+        <a href="/parameters" class="btn-soc btn-soc-outline-cyan">
           <i class="fas fa-sliders"></i> Packet Inspector
         </a>
       </div>
 
-      <!-- Quick SOC Telemetry Bar -->
-      <div class="d-flex flex-wrap gap-4 pt-3 border-top border-secondary-subtle" style="font-size: 0.85rem;">
+      <!-- Quick Telemetry Specs -->
+      <div class="d-flex flex-wrap gap-4 pt-3 border-top border-secondary-subtle" style="font-size: 0.82rem;">
         <div>
-          <span class="text-secondary d-block">Detection Accuracy</span>
-          <span class="text-white fw-bold font-mono" style="color: var(--soc-neon-cyan) !important;">97.6% (NSL-KDD)</span>
+          <span class="text-secondary d-block">Top Accuracy</span>
+          <span class="text-white fw-semibold font-mono text-sky">97.60% (KNN / RF)</span>
         </div>
         <div>
-          <span class="text-secondary d-block">Supported Models</span>
-          <span class="text-white fw-bold font-mono">KNN, RF, CNN, LSTM</span>
+          <span class="text-secondary d-block">Evaluation Dataset</span>
+          <span class="text-white fw-semibold font-mono">NSL-KDD (22.5k Records)</span>
         </div>
         <div>
-          <span class="text-secondary d-block">Triage Latency</span>
-          <span class="text-white fw-bold font-mono" style="color: var(--soc-emerald-safe) !important;">&lt; 50ms / packet</span>
+          <span class="text-secondary d-block">Architectures</span>
+          <span class="text-white fw-semibold font-mono">KNN • RF • CNN • LSTM</span>
         </div>
         <div>
-          <span class="text-secondary d-block">Containment Playbooks</span>
-          <span class="text-white fw-bold font-mono">iptables / sysctl / PS</span>
+          <span class="text-secondary d-block">Inference Speed</span>
+          <span class="text-white fw-semibold font-mono" style="color: var(--soc-emerald-safe);">&lt; 50ms / sample</span>
         </div>
       </div>
 
     </div>
 
-    <!-- Cyber Radar Visual -->
-    <div class="col-lg-5 text-center mt-4 mt-lg-0">
-      <div class="soc-card p-4 text-center position-relative overflow-hidden" style="background: radial-gradient(circle at center, rgba(0,240,255,0.08) 0%, rgba(17,24,39,0.95) 75%); min-height: 360px; display: flex; align-items: center; justify-content: center;">
-        
-        <!-- Radar Ring & Scanner -->
-        <div style="position: relative; width: 260px; height: 260px; border-radius: 50%; border: 1px solid rgba(0, 240, 255, 0.3); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 30px rgba(0,240,255,0.1);">
-          <div style="position: absolute; width: 190px; height: 190px; border-radius: 50%; border: 1px dashed rgba(0, 240, 255, 0.2);"></div>
-          <div style="position: absolute; width: 110px; height: 110px; border-radius: 50%; border: 1px solid rgba(0, 240, 255, 0.2);"></div>
+    <!-- Clean Model Performance Overview Card -->
+    <div class="col-lg-5 mt-4 mt-lg-0">
+      <div class="soc-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom border-secondary-subtle">
+          <div>
+            <h5 class="text-white mb-0">Model Performance</h5>
+            <small class="text-secondary">NSL-KDD Test Partition</small>
+          </div>
+          <a href="/stats" class="btn-soc btn-soc-secondary btn-sm" style="font-size: 0.75rem;">Full Report</a>
+        </div>
+
+        <div class="d-flex flex-column gap-3">
           
-          <!-- Crosshairs -->
-          <div style="position: absolute; width: 100%; height: 1px; background: rgba(0, 240, 255, 0.2);"></div>
-          <div style="position: absolute; height: 100%; width: 1px; background: rgba(0, 240, 255, 0.2);"></div>
+          <!-- KNN -->
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-white font-mono" style="font-size: 0.88rem;">K-Nearest Neighbors</span>
+              <span class="soc-badge badge-glow-cyan" style="font-size: 0.72rem;">97.60%</span>
+            </div>
+            <div class="progress" style="height: 6px; background: var(--soc-bg-canvas);">
+              <div class="progress-bar" style="width: 97.6%; background: var(--soc-accent-primary);"></div>
+            </div>
+          </div>
 
-          <!-- Central Node -->
-          <div style="width: 22px; height: 22px; border-radius: 50%; background: var(--soc-neon-cyan); box-shadow: 0 0 15px var(--soc-neon-cyan);"></div>
+          <!-- Random Forest -->
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-white font-mono" style="font-size: 0.88rem;">Random Forest (Recommended)</span>
+              <span class="soc-badge badge-glow-safe" style="font-size: 0.72rem;">97.41%</span>
+            </div>
+            <div class="progress" style="height: 6px; background: var(--soc-bg-canvas);">
+              <div class="progress-bar" style="width: 97.4%; background: var(--soc-emerald-safe);"></div>
+            </div>
+          </div>
 
-          <!-- Detected Nodes -->
-          <span class="badge badge-glow-critical" style="position: absolute; top: 40px; right: 40px; font-size: 0.7rem;">DoS T1498</span>
-          <span class="badge badge-glow-warning" style="position: absolute; bottom: 50px; left: 30px; font-size: 0.7rem;">Probe T1046</span>
-          <span class="badge badge-glow-safe" style="position: absolute; top: 55px; left: 45px; font-size: 0.7rem;">Benign Traffic</span>
+          <!-- CNN -->
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-white font-mono" style="font-size: 0.88rem;">1D Convolutional Neural Net</span>
+              <span class="soc-badge badge-glow-purple" style="font-size: 0.72rem;">95.82%</span>
+            </div>
+            <div class="progress" style="height: 6px; background: var(--soc-bg-canvas);">
+              <div class="progress-bar" style="width: 95.8%; background: var(--soc-purple-model);"></div>
+            </div>
+          </div>
+
+          <!-- LSTM -->
+          <div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span class="text-white font-mono" style="font-size: 0.88rem;">Recurrent LSTM Network</span>
+              <span class="soc-badge badge-glow-warning" style="font-size: 0.72rem;">95.62%</span>
+            </div>
+            <div class="progress" style="height: 6px; background: var(--soc-bg-canvas);">
+              <div class="progress-bar" style="width: 95.6%; background: var(--soc-amber-warning);"></div>
+            </div>
+          </div>
+
         </div>
 
-        <div class="mt-3">
-          <small class="font-mono text-secondary"><i class="fas fa-satellite-dish me-1" style="color: var(--soc-neon-cyan);"></i> ACTIVE THREAT SCANNER: SENSORS ENGAGED</small>
+        <div class="mt-3 pt-3 border-top border-secondary-subtle text-secondary" style="font-size: 0.8rem;">
+          <i class="fas fa-check-circle text-success me-1"></i> Multi-model consensus validates classifications across classical & deep learning approaches.
         </div>
-
       </div>
     </div>
   </div>
 
-  <!-- Enterprise Capabilities Grid -->
+  <!-- Core Capabilities Grid -->
   <div class="mb-5">
     <div class="text-center mb-4">
-      <span class="soc-badge badge-glow-cyan mb-2">Operational Architecture</span>
-      <h2 class="text-white">Core Platform Capabilities</h2>
-      <p class="text-secondary">Designed for 24/7 Security Operations Center (SOC) defense infrastructure</p>
+      <h2 class="text-white mb-1">Core Capabilities</h2>
+      <p class="text-secondary" style="font-size: 0.95rem;">Designed for accurate classification and actionable incident response</p>
     </div>
 
     <div class="row g-4">
       
       <div class="col-md-6 col-lg-3">
         <div class="soc-card h-100 p-4">
-          <div class="mb-3 text-info">
-            <i class="fas fa-network-wired fa-2x" style="color: var(--soc-neon-cyan);"></i>
+          <div class="mb-3 text-sky">
+            <i class="fas fa-network-wired fa-xl"></i>
           </div>
-          <h4 class="text-white">Traffic Normalization</h4>
-          <p class="text-secondary" style="font-size: 0.9rem;">
-            Deterministic categorical encoding for 70 network services and 11 connection flags with standard MinMax scaling.
+          <h5 class="text-white mb-2">Feature Normalization</h5>
+          <p class="text-secondary mb-0" style="font-size: 0.88rem;">
+            Standardized preprocessing for 70 network services and 11 connection flags with MinMax normalization.
           </p>
         </div>
       </div>
 
       <div class="col-md-6 col-lg-3">
         <div class="soc-card h-100 p-4">
-          <div class="mb-3 text-success">
-            <i class="fas fa-brain fa-2x" style="color: var(--soc-purple-model);"></i>
+          <div class="mb-3" style="color: var(--soc-purple-model);">
+            <i class="fas fa-brain fa-xl"></i>
           </div>
-          <h4 class="text-white">Multi-Model Ensemble</h4>
-          <p class="text-secondary" style="font-size: 0.9rem;">
-            Cross-verifies predictions across KNN (97.6%), Random Forest (97.4%), CNN (95.8%), and LSTM (95.6%) neural nets.
+          <h5 class="text-white mb-2">Multi-Model Ensemble</h5>
+          <p class="text-secondary mb-0" style="font-size: 0.88rem;">
+            Simultaneous evaluation across KNN, Random Forest, 1D CNN, and LSTM to prevent model-specific bias.
           </p>
         </div>
       </div>
 
       <div class="col-md-6 col-lg-3">
         <div class="soc-card h-100 p-4">
-          <div class="mb-3 text-danger">
-            <i class="fas fa-crosshairs fa-2x" style="color: var(--soc-crimson-critical);"></i>
+          <div class="mb-3" style="color: var(--soc-crimson-critical);">
+            <i class="fas fa-crosshairs fa-xl"></i>
           </div>
-          <h4 class="text-white">MITRE ATT&CK Matrix</h4>
-          <p class="text-secondary" style="font-size: 0.9rem;">
-            Direct correlation to industry attack tactics (TA0040, TA0007, TA0001, TA0004) with CVSS v3.1 severity scores.
+          <h5 class="text-white mb-2">MITRE ATT&CK Matrix</h5>
+          <p class="text-secondary mb-0" style="font-size: 0.88rem;">
+            Direct mapping of network anomalies to industry tactics (TA0040, TA0007, TA0001, TA0004) with CVSS scores.
           </p>
         </div>
       </div>
 
       <div class="col-md-6 col-lg-3">
         <div class="soc-card h-100 p-4">
-          <div class="mb-3 text-warning">
-            <i class="fas fa-shield-halved fa-2x" style="color: var(--soc-amber-warning);"></i>
+          <div class="mb-3" style="color: var(--soc-emerald-safe);">
+            <i class="fas fa-shield-halved fa-xl"></i>
           </div>
-          <h4 class="text-white">Automated Playbooks</h4>
-          <p class="text-secondary" style="font-size: 0.9rem;">
-            Surfaces one-click copyable tactical containment commands for iptables, TCP SYN flood mitigation, and account lockdown.
+          <h5 class="text-white mb-2">Containment Playbooks</h5>
+          <p class="text-secondary mb-0" style="font-size: 0.88rem;">
+            Copy-ready mitigation rules including iptables firewall filters and kernel sysctl parameter tuning.
           </p>
         </div>
       </div>
@@ -149,13 +184,13 @@
   <div class="soc-card p-4 p-lg-5 mb-5">
     <div class="row align-items-center">
       <div class="col-lg-5 mb-4 mb-lg-0">
-        <span class="soc-badge badge-glow-critical mb-2">Threat Intelligence</span>
-        <h3 class="text-white mb-3">Target Threat Taxonomies</h3>
-        <p class="text-secondary">
-          Trained on the benchmark NSL-KDD dataset to classify both binary intrusion states and granular attack categories with high precision.
+        <span class="soc-badge badge-glow-cyan mb-2">Threat Taxonomy</span>
+        <h3 class="text-white mb-2">Classified Attack Categories</h3>
+        <p class="text-secondary mb-3" style="font-size: 0.92rem;">
+          Trained on the NSL-KDD benchmark to differentiate benign traffic from four distinct network attack vectors.
         </p>
-        <a href="/attacks" class="btn-soc btn-soc-outline-cyan">
-          <i class="fas fa-book-open"></i> Full MITRE Framework
+        <a href="/attacks" class="btn-soc btn-soc-secondary btn-sm">
+          <i class="fas fa-book-open me-1"></i> Full MITRE Framework
         </a>
       </div>
       <div class="col-lg-7">
@@ -163,37 +198,37 @@
           <div class="col-sm-6">
             <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
               <div class="d-flex justify-content-between align-items-center mb-1">
-                <strong class="text-white">DoS Attacks</strong>
-                <span class="badge badge-glow-critical">CRITICAL (P1)</span>
+                <strong class="text-white">Denial of Service (DoS)</strong>
+                <span class="soc-badge badge-glow-critical" style="font-size: 0.68rem;">Critical</span>
               </div>
-              <small class="text-secondary">SYN Flood, Neptune, Smurf, Pod, Teardrop (MITRE T1498)</small>
+              <small class="text-secondary d-block">SYN Flood, Neptune, Smurf, Pod, Teardrop (T1498)</small>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
               <div class="d-flex justify-content-between align-items-center mb-1">
-                <strong class="text-white">Probe / Recon</strong>
-                <span class="badge badge-glow-warning">HIGH (P2)</span>
+                <strong class="text-white">Probe / Portscan</strong>
+                <span class="soc-badge badge-glow-warning" style="font-size: 0.68rem;">High</span>
               </div>
-              <small class="text-secondary">Portscan, Satan, IPsweep, Nmap (MITRE T1046)</small>
+              <small class="text-secondary d-block">Portscan, Satan, IPsweep, Nmap (T1046)</small>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
               <div class="d-flex justify-content-between align-items-center mb-1">
-                <strong class="text-white">R2L Attacks</strong>
-                <span class="badge badge-glow-warning">HIGH (P2)</span>
+                <strong class="text-white">Remote to Local (R2L)</strong>
+                <span class="soc-badge badge-glow-warning" style="font-size: 0.68rem;">High</span>
               </div>
-              <small class="text-secondary">Brute-Force, Warezclient, Guess_passwd (MITRE T1078)</small>
+              <small class="text-secondary d-block">Brute-Force, Warezclient, Guess_passwd (T1078)</small>
             </div>
           </div>
           <div class="col-sm-6">
             <div class="p-3 rounded border border-secondary-subtle" style="background: var(--soc-bg-canvas);">
               <div class="d-flex justify-content-between align-items-center mb-1">
-                <strong class="text-white">U2R Attacks</strong>
-                <span class="badge badge-glow-critical">SEVERE (P1)</span>
+                <strong class="text-white">User to Root (U2R)</strong>
+                <span class="soc-badge badge-glow-critical" style="font-size: 0.68rem;">Severe</span>
               </div>
-              <small class="text-secondary">Buffer Overflow, Rootkit, Loadmodule (MITRE T1068)</small>
+              <small class="text-secondary d-block">Buffer Overflow, Rootkit, Loadmodule (T1068)</small>
             </div>
           </div>
         </div>

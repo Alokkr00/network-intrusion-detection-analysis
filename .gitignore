@@ -98,3 +98,8 @@ models_backup/
 
 # Development/validation data files
 fs_new validation project.csv
+venv/
+.venv/
+env/
+data/
+notebooks/.ipynb_checkpoints/

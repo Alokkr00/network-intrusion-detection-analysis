@@ -6,14 +6,11 @@
 <div class="container-fluid px-lg-5 py-5">
   
   <!-- Header Banner -->
-  <div class="text-center mb-4">
-    <div class="d-inline-flex align-items-center gap-2 mb-2">
-      <span class="soc-badge badge-glow-purple"><i class="fas fa-file-csv"></i> Batch Telemetry Ingestion</span>
-      <span class="soc-badge badge-glow-cyan"><i class="fas fa-bolt"></i> High-Throughput Pipeline</span>
-    </div>
-    <h1 class="display-5 text-white fw-bold mb-2">Batch CSV Intrusion Classification</h1>
-    <p class="text-secondary" style="max-width: 680px; margin: 0 auto;">
-      Ingest network traffic datasets (16 to 42 columns). Pre-flight validation inspects schema before submission, annotating each row with binary status and MITRE attack categories.
+    <div class="text-center mb-4">
+    <span class="soc-badge badge-glow-cyan mb-2"><i class="fas fa-file-csv me-1"></i> Batch Dataset Ingestion</span>
+    <h1 class="display-6 text-white fw-bold mb-2">Batch CSV Intrusion Classification</h1>
+    <p class="text-secondary" style="max-width: 620px; margin: 0 auto; font-size: 0.95rem;">
+      Upload traffic captures (.csv) with 16 to 42 attributes for schema validation, multi-model threat classification, and annotated data export.
     </p>
   </div>
 
@@ -213,3 +210,4 @@ document.getElementById('csvUploadForm').addEventListener('submit', function() {
 </script>
 
 <%- include('partials/footer') %>
+

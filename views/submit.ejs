@@ -1,89 +1,89 @@
-<%- include('partials/header') %>
+﻿<%- include('partials/header') %>
 
 <div class="container-fluid px-lg-5 py-5">
   
-  <!-- Operations Header -->
+  <!-- Header -->
   <div class="text-center mb-5">
     <div class="d-inline-flex align-items-center gap-2 mb-2">
-      <span class="soc-badge badge-glow-cyan"><i class="fas fa-terminal"></i> Tactical Operations Center</span>
-      <span class="soc-badge badge-glow-safe"><i class="fas fa-circle-check"></i> All Models Active</span>
+      <span class="soc-badge badge-glow-cyan"><i class="fas fa-terminal me-1"></i> Analysis Workspace</span>
+      <span class="soc-badge badge-glow-safe"><i class="fas fa-circle-check me-1"></i> Models Active</span>
     </div>
-    <h1 class="display-5 text-white fw-bold mb-2">Network Intrusion Detection Operations</h1>
-    <p class="text-secondary" style="max-width: 600px; margin: 0 auto;">
-      Select an intrusion triage modality below to assess live packet telemetry, execute batch traffic classification, or inspect custom signatures.
+    <h1 class="display-6 text-white fw-bold mb-2">Detection Operations</h1>
+    <p class="text-secondary" style="max-width: 580px; margin: 0 auto; font-size: 0.95rem;">
+      Select an analysis mode to evaluate network traffic patterns, test individual sample vectors, or ingest bulk capture files.
     </p>
   </div>
 
-  <!-- Operational Mode Cards (12-Column Responsive Grid) -->
+  <!-- Operational Mode Cards -->
   <div class="row g-4 justify-content-center mb-5">
     
-    <!-- Modality 1: Random Vector Triage -->
+    <!-- Mode 1: Random Sample Test -->
     <div class="col-lg-4 col-md-6">
       <div class="soc-card h-100">
         <div class="soc-card-header">
-          <span class="soc-badge badge-glow-cyan"><i class="fas fa-dice"></i> Benchmark Vector</span>
-          <small class="text-secondary font-mono">NSL-KDD Sample</small>
+          <span class="soc-badge badge-glow-cyan"><i class="fas fa-dice me-1"></i> Test Partition</span>
+          <small class="text-secondary font-mono">Single Vector</small>
         </div>
         <div class="soc-card-body d-flex flex-column justify-content-between">
           <div>
-            <div class="d-inline-flex p-3 rounded-circle mb-3" style="background: rgba(0, 240, 255, 0.1); color: var(--soc-neon-cyan);">
-              <i class="fas fa-shuffle fa-2x"></i>
+            <div class="d-inline-flex p-3 rounded mb-3" style="background: rgba(56, 189, 248, 0.1); color: var(--soc-accent-primary);">
+              <i class="fas fa-shuffle fa-xl"></i>
             </div>
-            <h3 class="text-white mb-2">Random Sample Triage</h3>
-            <p class="text-secondary" style="font-size: 0.95rem;">
-              Stochastically draws a verified packet vector from the NSL-KDD test set and executes real-time multi-model inference across KNN, Random Forest, CNN, and LSTM.
+            <h4 class="text-white mb-2">Random Sample Triage</h4>
+            <p class="text-secondary" style="font-size: 0.9rem;">
+              Draws an authentic packet vector from the NSL-KDD test dataset and executes simultaneous multi-model inference across KNN, Random Forest, CNN, and LSTM.
             </p>
           </div>
           <div class="mt-4 pt-3 border-top border-secondary-subtle">
             <a href="/secrets" class="btn-soc btn-soc-primary w-100" id="runRandomBtn">
-              <i class="fas fa-play"></i> Execute Random Triage
+              <i class="fas fa-play"></i> Run Random Sample
             </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modality 2: Batch CSV Ingestion -->
+    <!-- Mode 2: Batch CSV Ingestion -->
     <div class="col-lg-4 col-md-6">
       <div class="soc-card h-100 soc-card-active">
         <div class="soc-card-header">
-          <span class="soc-badge badge-glow-purple"><i class="fas fa-layer-group"></i> High Throughput</span>
+          <span class="soc-badge badge-glow-purple"><i class="fas fa-file-csv me-1"></i> Bulk Ingestion</span>
           <small class="text-secondary font-mono">16 - 42 Columns</small>
         </div>
         <div class="soc-card-body d-flex flex-column justify-content-between">
           <div>
-            <div class="d-inline-flex p-3 rounded-circle mb-3" style="background: rgba(139, 92, 246, 0.1); color: var(--soc-purple-model);">
-              <i class="fas fa-file-csv fa-2x"></i>
+            <div class="d-inline-flex p-3 rounded mb-3" style="background: rgba(163, 113, 247, 0.1); color: var(--soc-purple-model);">
+              <i class="fas fa-cloud-arrow-up fa-xl"></i>
             </div>
-            <h3 class="text-white mb-2">Batch CSV Ingestion</h3>
-            <p class="text-secondary" style="font-size: 0.95rem;">
-              Upload network traffic datasets up to 50MB. Features drag-and-drop ingestion, client-side PapaParse pre-flight schema inspection, and automated annotated CSV export.
+            <h4 class="text-white mb-2">Batch CSV Ingestion</h4>
+            <p class="text-secondary" style="font-size: 0.9rem;">
+              Upload network capture datasets up to 50MB. Includes pre-flight schema inspection, multi-model batch classification, and annotated CSV export.
             </p>
           </div>
           <div class="mt-4 pt-3 border-top border-secondary-subtle">
             <a href="/csv" class="btn-soc btn-soc-primary w-100">
-              <i class="fas fa-upload"></i> Open Ingestion Portal
+              <i class="fas fa-upload"></i> Upload CSV Dataset
             </a>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Modality 3: Custom Packet Parameters -->
+    <!-- Mode 3: Custom Packet Parameters -->
     <div class="col-lg-4 col-md-6">
       <div class="soc-card h-100">
         <div class="soc-card-header">
-          <span class="soc-badge badge-glow-warning"><i class="fas fa-sliders"></i> Targeted Forensics</span>
-          <small class="text-secondary font-mono">Manual / Presets</small>
+          <span class="soc-badge badge-glow-warning"><i class="fas fa-sliders me-1"></i> Interactive</span>
+          <small class="text-secondary font-mono">Manual Parameters</small>
         </div>
         <div class="soc-card-body d-flex flex-column justify-content-between">
           <div>
-            <div class="d-inline-flex p-3 rounded-circle mb-3" style="background: rgba(245, 158, 11, 0.1); color: var(--soc-amber-warning);">
-              <i class="fas fa-crosshairs fa-2x"></i>
+            <div class="d-inline-flex p-3 rounded mb-3" style="background: rgba(210, 153, 34, 0.1); color: var(--soc-amber-warning);">
+              <i class="fas fa-sliders fa-xl"></i>
             </div>
-            <h3 class="text-white mb-2">Packet Parameter Inspector</h3>
-            <p class="text-secondary" style="font-size: 0.95rem;">
-              Inspect specific Layer 4 protocol configurations, error frequencies, and destination host telemetry. Includes one-click presets for Neptune SYN Flood, Smurf, and Satan portscans.
+            <h4 class="text-white mb-2">Packet Parameter Inspector</h4>
+            <p class="text-secondary" style="font-size: 0.9rem;">
+              Manually configure transport protocols, service ports, error rates, and destination host metrics. Includes presets for Neptune SYN Flood, Smurf, and Satan scans.
             </p>
           </div>
           <div class="mt-4 pt-3 border-top border-secondary-subtle">
@@ -97,18 +97,18 @@
 
   </div>
 
-  <!-- Operational Metrics & Reference Navigation -->
+  <!-- Model Specs Banner -->
   <div class="soc-card p-4">
     <div class="row align-items-center">
       <div class="col-md-8 text-center text-md-start mb-3 mb-md-0">
-        <h5 class="text-white mb-1"><i class="fas fa-circle-nodes me-2" style="color: var(--soc-neon-cyan);"></i>Model Architecture & Performance Specs</h5>
-        <p class="text-secondary mb-0" style="font-size: 0.9rem;">
-          Inference is evaluated simultaneously across K-Nearest Neighbors, Random Forest ensemble, 1D Convolutional Neural Network, and Long Short-Term Memory recurrent network.
+        <h5 class="text-white mb-1"><i class="fas fa-chart-simple me-2 text-sky"></i>Model Performance Benchmarks</h5>
+        <p class="text-secondary mb-0" style="font-size: 0.88rem;">
+          Inference is evaluated simultaneously across K-Nearest Neighbors, Random Forest, 1D CNN, and LSTM architectures.
         </p>
       </div>
       <div class="col-md-4 text-center text-md-end">
-        <a href="/stats" class="btn-soc btn-soc-outline-cyan">
-          <i class="fas fa-chart-line"></i> View Model Benchmarks
+        <a href="/stats" class="btn-soc btn-soc-secondary">
+          <i class="fas fa-chart-line me-1"></i> View Benchmarks
         </a>
       </div>
     </div>
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const btn = document.getElementById('runRandomBtn');
   if (btn) {
     btn.addEventListener('click', function() {
-      this.innerHTML = '<i class="fas fa-cog fa-spin me-2"></i> Sampling & Analyzing...';
+      this.innerHTML = '<i class="fas fa-circle-notch fa-spin me-2"></i> Evaluating Models...';
       this.classList.add('disabled');
       this.style.pointerEvents = 'none';
     });
