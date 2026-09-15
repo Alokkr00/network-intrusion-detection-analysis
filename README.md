@@ -30,7 +30,7 @@ The repository is organized into two complementary systems:
 
 1. **Interactive Web Dashboard (`app.js`, `views/`, `public/`)**:
    - A full-stack web console built with **Node.js**, **Express**, **EJS**, **Bootstrap 5**, and **Chart.js 4**.
-   - **Single Packet Triage**: Stochastically draws verified records from the validation set and evaluates them across 4 models simultaneously.
+   - **Single Packet Triage**: Evaluates random verified records from the validation dataset across 4 models simultaneously.
    - **Parametric Packet Inspector**: Allows analysts to inject 16 custom Layer 4 parameters (protocol type, service, connection flag, error rates, host traffic count) or load preset attack vectors (*Neptune DoS*, *Smurf DoS*, *Satan Probe*, *Normal HTTP*).
    - **Batch CSV Ingestion**: Drag-and-drop network traffic captures (16 to 42 columns). Validates schema with client-side PapaParse, runs batch inference, displays normal vs. attack ratios with threat doughnuts, and exports an annotated CSV.
    - **Multi-Model Consensus**: Compares predictions across **Random Forest**, **K-Nearest Neighbors (KNN)**, **Convolutional Neural Networks (CNN)**, and **Long Short-Term Memory (LSTM)** models.
@@ -290,7 +290,22 @@ npm run test:live
 
 ---
 
-## 10. License & Citation
+## 10. Engineering Considerations & Research Limitations
+
+A critical part of applied cybersecurity and machine learning is recognizing the boundaries of academic benchmark systems:
+
+1. **Benchmark Dataset Context (NSL-KDD)**:
+   - While NSL-KDD resolves the severe synthetic redundancy of KDD Cup 99, its traffic profiles represent historical network topologies. For contemporary zero-day coverage, modern datasets (such as **UNSW-NB15** and **CIC-IDS-2017**) should be evaluated alongside it.
+2. **Model Paradigm on Structured Tabular Features**:
+   - Random Forest and KNN consistently achieve higher accuracy (~97.4%–97.6%) than 1D CNN and LSTM (~95.6%–95.8%). This aligns with established machine learning literature: tabular network features lack the spatial correlation or natural sequential locality that neural networks require to outperform ensemble tree algorithms.
+3. **Inference IPC vs. Production Microservice Architecture**:
+   - The default demonstration mode uses Node.js `python-shell` child process IPC for zero-configuration execution. For high-volume production packet streams (>1,000 packets/sec), models should be served via a persistent in-memory microservice (FastAPI / gRPC) to eliminate per-request runtime initialization latency.
+4. **Offline Resilience & Data Persistence**:
+   - The dual-mode database layer guarantees high availability in air-gapped environments by falling back to asynchronous file-backed storage (`users_offline.json`), while supporting production MongoDB clusters when available.
+
+---
+
+## 11. License & Citation
 
 This project is licensed under the **Apache License 2.0**.
 

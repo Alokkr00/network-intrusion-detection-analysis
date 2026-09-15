@@ -54,7 +54,8 @@ if importlib.util.find_spec('tensorflow') is not None:
         lstm_multi = tf.keras.models.load_model(path_resolver.resolve_model('lstm_latest_multiclass.h5'))
         
         from sklearn.preprocessing import Normalizer
-        tp_norm = Normalizer().fit_transform(X_sample)
+        normalizer = Normalizer()
+        tp_norm = normalizer.transform(X_sample)
         tp_cnn = np.reshape(tp_norm, (tp_norm.shape[0], 1, tp_norm.shape[1]))
         val_cnn = int(round(cnn_bin.predict(tp_cnn, verbose=0)[0][0]))
         cnn_bin_label = 'ATTACK' if val_cnn == 1 else 'NORMAL'

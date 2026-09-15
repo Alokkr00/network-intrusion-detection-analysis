@@ -36,10 +36,10 @@ class OfflineUserManager {
     }
   }
 
-  saveUsers() {
+  async saveUsers() {
     try {
       const list = Array.from(this.users.values());
-      fs.writeFileSync(FALLBACK_FILE, JSON.stringify(list, null, 2), 'utf8');
+      await fs.promises.writeFile(FALLBACK_FILE, JSON.stringify(list, null, 2), 'utf8');
     } catch (e) {
       console.log('[DB FALLBACK] Error saving offline users:', e.message);
     }
@@ -71,7 +71,7 @@ class OfflineUserManager {
     };
 
     this.users.set(id, newUser);
-    this.saveUsers();
+    this.saveUsers().catch(e => console.error('[DB FALLBACK] Async write error:', e.message));
     return callback(null, newUser);
   }
 

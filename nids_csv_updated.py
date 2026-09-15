@@ -64,7 +64,8 @@ elif val in ['cnn', 'lstm']:
         try:
             import tensorflow as tf
             from sklearn.preprocessing import Normalizer
-            X_norm = Normalizer().fit_transform(X_scaled)
+            normalizer = Normalizer()
+            X_norm = normalizer.transform(X_scaled)
             
             if val == 'cnn':
                 cnn_bin = tf.keras.models.load_model(path_resolver.resolve_model('latest_cnn_bin.h5'))
